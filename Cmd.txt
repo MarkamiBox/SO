@@ -1,0 +1,261 @@
++==============================================================================+
+|                       GUIDA BASH CON ESEMPI E RISULTATI                      |
++==============================================================================+
+
+================================================================================
+ SEZIONE III: FILE SYSTEM E NAVIGAZIONE
+================================================================================
+
+[ pwd ] - Mostra la directory di lavoro corrente.
+  BASE : pwd
+         -> /home/mario
+  EXTRA: (Nessuna opzione extra rilevante)
+         -> -
+
+[ cd ] - Cambia la directory di lavoro corrente.
+  BASE : cd /var/log
+         -> (Sposta l'utente nella cartella /var/log)
+  EXTRA: cd ..
+         -> (Sposta l'utente nella cartella superiore)
+
+[ ls ] - Visualizza i nomi e le proprietà dei file.
+  BASE : ls
+         -> documenti.txt foto.jpg
+  EXTRA: ls -la
+         -> drwxr-xr-x . .. .config documenti.txt foto.jpg (Dettagli + nascosti)
+
+[ echo ] - Visualizza in output la sequenza di caratteri.
+  BASE : echo "Ciao Mondo"
+         -> Ciao Mondo
+  EXTRA: echo -e "Raga\nzzi"
+         -> Raga (a capo) zzi
+
+[ cat ] - Visualizza in output il contenuto del file.
+  BASE : cat note.txt
+         -> Comprare il latte...
+  EXTRA: cat > nuovo.txt
+         -> (Attende input da tastiera per scrivere nel file)
+
+[ read ] - Legge input (da stdin) e lo mette in variabili.
+  BASE : read NOME
+         -> (Attende input, es: "Mario") -> La variabile $NOME ora vale "Mario"
+  EXTRA: read -n 1 TASTO
+         -> (Legge solo 1 carattere e prosegue subito senza premere Invio)
+
+[ grep ] - Cerca righe contenenti parole specifiche.
+  BASE : grep "Errore" server.log
+         -> [ERROR] Errore di connessione al DB
+  EXTRA: grep -v "OK" server.log
+         -> (Mostra tutte le righe che NON contengono "OK")
+
+[ wc ] - Conta parole, righe o caratteri.
+  BASE : wc file.txt
+         -> 10  20 150 (Righe, Parole, Byte)
+  EXTRA: wc -l file.txt
+         -> 10 (Solo numero di righe)
+
+[ cut ] - Estrazione di sezioni di testo.
+  BASE : echo "abcdef" | cut -b 1-3
+         -> abc
+  EXTRA: echo "user:pass" | cut -d: -f1
+         -> user (Usa ':' come delimitatore)
+
+[ head ] - Mostra le prime righe del file.
+  BASE : head file.txt
+         -> (Stampa le prime 10 righe)
+  EXTRA: head -n 3 file.txt
+         -> (Stampa solo le prime 3 righe)
+
+[ tail ] - Mostra le ultime righe del file.
+  BASE : tail file.txt
+         -> (Stampa le ultime 10 righe)
+  EXTRA: tail -f server.log
+         -> (Rimane in attesa e stampa le nuove righe man mano che vengono scritte)
+
+[ sed ] - Stream editor per manipolare testo.
+  BASE : sed 's/mela/pera/' frutta.txt
+         -> (Stampa il testo sostituendo la prima 'mela' con 'pera' per riga)
+  EXTRA: sed -z 's/\n/ /g' file.txt
+         -> (Sostituisce i newline con spazi, unendo le righe)
+
+[ find ] - Cerca file nel sistema.
+  BASE : find . -name "*.txt"
+         -> ./note.txt ./docs/readme.txt
+  EXTRA: find . -type d
+         -> ./docs (Trova solo le directory)
+
+[ tee ] - Legge da stdin e scrive su stdout E su file.
+  BASE : echo "Log" | tee file.txt
+         -> Stampa "Log" a video E lo salva in file.txt
+  EXTRA: echo "Log" | sudo tee /root/file
+         -> Scrive su file protetto usando i permessi di sudo
+
+[ mkdir ] - Crea una nuova directory.
+  BASE : mkdir foto
+         -> (Crea la cartella "foto")
+  EXTRA: mkdir -p anni/2023
+         -> (Crea la cartella "anni" e la sottocartella "2023" in un colpo solo)
+
+[ cp ] - Copia file o directory.
+  BASE : cp tesi.doc tesi_bkp.doc
+         -> (Crea una copia del file)
+  EXTRA: cp -R CartellaA CartellaB
+         -> (Copia CartellaA e tutto il suo contenuto dentro CartellaB)
+
+[ mv ] - Sposta o rinomina file.
+  BASE : mv foto.jpg immagini/
+         -> (Sposta il file nella cartella immagini)
+  EXTRA: mv vecchio.txt nuovo.txt
+         -> (Rinomina il file)
+
+[ chmod ] - Cambia i permessi dei file.
+  BASE : chmod 755 script.sh
+         -> (Rende lo script eseguibile per tutti, scrivibile solo dall'owner)
+  EXTRA: chmod u+s eseguibile
+         -> (Attiva il bit SUID: il file viene eseguito con i permessi del proprietario)
+
+[ chown ] - Cambia il proprietario.
+  BASE : chown mario file.txt
+         -> (Il file ora appartiene all'utente 'mario')
+  EXTRA: chown mario:studenti file.txt
+         -> (Cambia proprietario in 'mario' e gruppo in 'studenti')
+
+================================================================================
+ SEZIONE IV: CONTROLLO, AMBIENTE E PROCESSI
+================================================================================
+
+[ export ] - Crea variabili d'ambiente.
+  BASE : export PATH=$PATH:/nuova/dir
+         -> (Aggiunge una directory al PATH per questa sessione e processi figli)
+  EXTRA: export -n VAR
+         -> (Rimuove la proprietà 'export', VAR diventa variabile locale)
+
+[ env ] - Visualizza variabili d'ambiente.
+  BASE : env
+         -> USER=mario PATH=/bin:/usr/bin ...
+  EXTRA: env -i comando
+         -> (Esegue comando ignorando l'ambiente ereditato)
+
+[ ps ] - Informazioni sui processi.
+  BASE : ps
+         -> (Mostra i processi della shell corrente)
+  EXTRA: ps aux
+         -> (Mostra TUTTI i processi di TUTTI gli utenti con dettagli)
+
+[ kill ] - Invia segnali ai processi (di solito per chiuderli).
+  BASE : kill 1234
+         -> (Invia segnale di termine al processo con PID 1234)
+  EXTRA: kill -9 1234
+         -> (Uccide forzatamente il processo 1234, non intercettabile)
+
+[ wait ] - Attende la fine dei processi.
+  BASE : wait
+         -> (Attende che TUTTI i job in background finiscano)
+  EXTRA: wait $!
+         -> (Attende solo la fine dell'ultimo comando lanciato in background)
+
+[ nohup ] - Lancia comando immune all'hangups (chiusura terminale).
+  BASE : nohup ./backup.sh &
+         -> (Esegue il backup in background; continuerà anche se chiudi la finestra)
+  EXTRA: (Nessuna opzione specifica, si usa spesso con &)
+         -> -
+
+[ exec ] - Sostituisce la shell o gestisce File Descriptor.
+  BASE : exec ls
+         -> (La shell viene chiusa e sostituita dal comando ls)
+  EXTRA: exec 3< file.txt
+         -> (Apre file.txt in lettura assegnandolo al File Descriptor 3)
+
+================================================================================
+ SEZIONE V: ISTRUZIONI DI CONTROLLO FLUSSO
+================================================================================
+
+[ if/then/else ] - Logica condizionale.
+  BASE : if [ -f file ]; then echo "C'è"; fi
+         -> Stampa "C'è" se il file esiste.
+  EXTRA: if [ $A -gt $B ]; then ... elif ...
+         -> Controlla se A è maggiore di B, altrimenti controlla altra condizione.
+
+[ while ] - Ciclo finché vero.
+  BASE : while [ $X -lt 5 ]; do echo $X; ((X++)); done
+         -> Stampa 0, 1, 2, 3, 4.
+  EXTRA: while read RIGA; do echo $RIGA; done < file.txt
+         -> Legge il file riga per riga.
+
+[ for ] - Ciclo su lista.
+  BASE : for I in A B C; do echo $I; done
+         -> Stampa A, poi B, poi C.
+  EXTRA: for ((i=0; i<3; i++)); do echo $i; done
+         -> Stampa 0, 1, 2 (stile C).
+
+[ [[ ... ]] ] - Test condizionale avanzato.
+  BASE : [[ -e foto.jpg ]]
+         -> Restituisce VERO (exit status 0) se il file esiste.
+  EXTRA: [[ $STR == "A" && $NUM -gt 10 ]]
+         -> VERO se stringa è "A" AND numero > 10.
+
+[ (( ... )) ] - Valutazione aritmetica.
+  BASE : (( 5 > 3 ))
+         -> Restituisce VERO (0).
+  EXTRA: (( A = A + 1 ))
+         -> Incrementa la variabile A (simile a let).
+
+================================================================================
+ SEZIONE VI & VII: VARIABILI SPECIALI E OPERATORI
+================================================================================
+
+[ $? ] - Exit status.
+  BASE : ls file_inesistente; echo $?
+         -> 2 (o altro numero diverso da 0, indica errore).
+  EXTRA: ls file_esistente; echo $?
+         -> 0 (indica successo).
+
+[ $1, $2... ] - Argomenti posizionali.
+  BASE : ./script.sh ciao mondo (nello script: echo $1)
+         -> ciao
+  EXTRA: echo ${!i}
+         -> (Se i=1, stampa il contenuto di $1 - riferimento indiretto).
+
+[ > ] - Redirect Output.
+  BASE : echo "Hola" > file.txt
+         -> Scrive "Hola" nel file (sovrascrive).
+  EXTRA: ls > /dev/null
+         -> Silenzia l'output mandandolo nel nulla.
+
+[ >> ] - Append Output.
+  BASE : echo "Mondo" >> file.txt
+         -> Aggiunge "Mondo" alla fine del file esistente.
+
+[ | ] - Pipe.
+  BASE : cat file.txt | grep "A"
+         -> Passa il contenuto del file al comando grep.
+  EXTRA: comando 2>&1 | cat
+         -> Passa sia Output che Errori al comando successivo.
+
+[ $() ] - Command Substitution.
+  BASE : A=$(date)
+         -> La variabile A ora contiene la data corrente (es: "Lun 30 Nov...").
+  EXTRA: file $(which ls)
+         -> Esegue 'which ls' (/bin/ls) e passa il risultato a 'file'.
+
+================================================================================
+ SEZIONE VIII: GESTIONE PACCHETTI (Debian/Ubuntu)
+================================================================================
+
+[ sudo ] - Esegue come superutente.
+  BASE : sudo apt update
+         -> Esegue l'aggiornamento con privilegi di root (chiede password).
+  EXTRA: sudo -u pippo ls
+         -> Esegue 'ls' come utente 'pippo'.
+
+[ apt-get ] - Gestione pacchetti.
+  BASE : apt-get install vim
+         -> Scarica e installa l'editor vim.
+  EXTRA: apt-get purge vim
+         -> Disinstalla vim e cancella anche i suoi file di configurazione.
+
+[ wget ] - Scarica da web.
+  BASE : wget http://sito.com/file.zip
+         -> Scarica il file nella directory corrente.
+  EXTRA: wget -O nome.html http://sito.com
+         -> Scarica e salva con un nome specifico.
