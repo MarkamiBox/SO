@@ -1,0 +1,574 @@
++==============================================================================+
+|                             GUIDA BASH ULTIMATE                              |
++==============================================================================+
+
+ISTRUZIONI:
+1. Premi CTRL+F.
+2. Scrivi quello che devi fare (es: "scaricare sito", "file con spazi", "debug").
+3. Il risultato ti porterà al codice esatto.
+
+================================================================================
+ SEZIONE I: FILE SYSTEM, CREAZIONE, NAVIGAZIONE E PERMESSI
+================================================================================
+
+[ GESTIONE FILE E CARTELLE ]
+--------------------------------------------------------------------------------
+| "creare una directory", "creare cartella", "creare percorso completo"
+| "sottodirectory che contiene", "struttura annidata", "albero di directory"
+| "creare file vuoto", "creare tre file", "creare file multipli", "generare"
+| "spostare file", "rinominare file", "cambiare nome", "cambiare estensione"
+| "copiare file", "copiare cartella", "copia ricorsiva", "duplicare"
+| "eliminare file", "cancellare", "rimuovere directory", "eliminare tutto"
+| "dove mi trovo", "percorso corrente", "directory di lavoro", "pwd"
+| "visualizzare file", "lista file", "file nascosti", "inizia per punto"
+| "ordinare per dimensione", "visualizzare dettagli", "permessi", "data"
+| "rendere eseguibile", "cambiare permessi", "chmod", "proprietario"
+| "file con spazi nel nome", "gestire spazi", "nomi strani"
+--------------------------------------------------------------------------------
+
+[ mkdir ] - Creazione Cartelle
+  KW: "creare una directory", "creare cartella" 
+  mkdir cartella
+  
+  # KW: "sottodirectory che contiene", "struttura annidata", "creare percorso completo"
+  mkdir -p A1/B2/C3
+
+[ touch ] - Creazione File
+  KW: "creare file vuoto" 
+  touch file.txt
+  
+  KW: "creare tre file", "creare file multipli" 
+  touch A1/B2/C3/{1,2,3}.txt
+  
+  KW: "file con spazi nel nome", "creare nome con spazi" 
+  touch "file con spazi.txt"
+
+[ mv ] - Spostare o Rinominare
+  KW: "spostare file" 
+  mv file.txt cartella/
+  
+  KW: "rinominare file", "cambiare nome" 
+  mv vecchio.txt nuovo.txt
+  
+  KW: "cambiare estensione", "rinomina dinamica" 
+  for f in *.txt; do mv "$f" "${f%.txt}.bak"; done
+
+[ cp ] - Copiare
+  KW: "copiare file" 
+  cp file.txt copia.txt
+  
+  KW: "copiare cartella", "copia ricorsiva", "duplicare directory" 
+  cp -R cartella_orig cartella_dest
+
+[ rm ] - Cancellare
+  KW: "eliminare file", "cancellare" 
+  rm file.txt
+  
+  KW: "rimuovere directory", "eliminare tutto", "cancellare ricorsivamente" 
+  rm -rf directory/
+  
+  KW: "cancellare file con spazi" 
+  rm "file con spazi.txt"
+
+[ ls ] - Visualizzazione
+  KW: "visualizzare file", "lista file" 
+  ls
+  
+  KW: "file nascosti", "inizia per punto" 
+  ls -d .*
+  
+  KW: "visualizzare dettagli", "permessi" 
+  ls -la
+  
+  KW: "ordinare per dimensione", "file più grandi" 
+  ls -S1
+  
+  # KW: "ordinare per data", "ultimi modificati" (utile per check rapidi)
+  ls -lt
+
+[ chmod / chown ] - Permessi
+  KW: "rendere eseguibile" 
+  chmod +x script.sh
+  
+  KW: "cambiare permessi", "leggibile e eseguibile" 
+  chmod 755 file
+  
+  KW: "proprietario", "cambiare owner" 
+  chown utente:gruppo file.txt
+
+================================================================================
+ SEZIONE II: RICERCA AVANZATA (FIND) E FILTRI (GREP)
+================================================================================
+
+[ TROVARE E FILTRARE ]
+--------------------------------------------------------------------------------
+|  "cercare tra tutti i file", "trovare file", "cercare file con estensione"
+|  "cercare ricorsivamente", "cercare nelle sottodirectory"
+|  "solo file", "solo directory", "escludere file"
+|  "non cercare nelle sottodirectory", "solo nella cartella corrente"
+|  "escludendo la directory di partenza", "escludere root della ricerca"
+|  "modificato più recentemente di", "file più nuovo", "confronto date"
+|  "eseguire un comando sui file trovati", "fare grep sui file trovati"
+|  "contare quanti file ho trovato", "numero di file trovati"
+|  "cercare righe che contengono", "righe con la parola", "filtrare testo"
+|  "righe che NON contengono", "escludere parola", "grep inverso"
+|  "contare occorrenze della parola", "quante volte appare"
+|  "nomi dei file che contengono la stringa"
+|  "cercare asterisco", "cercare caratteri speciali"
+--------------------------------------------------------------------------------
+
+[ find ] - Il Motore di Ricerca (USALO QUANDO CERCHI OVUNQUE)
+  KW: "cercare tra tutti i file", "cercare file con estensione" 
+  find /percorso -name "*.txt"
+  
+  KW: "solo file" 
+  find . -type f
+  
+  KW: "solo directory" 
+  find . -type d
+  
+  KW: "non cercare nelle sottodirectory", "solo nella cartella corrente" 
+  find . -maxdepth 1
+  
+  KW: "escludendo la directory di partenza", "escludere root della ricerca" 
+  find . -mindepth 2
+  
+  KW: "eseguire un comando sui file trovati", "fare grep sui file trovati" 
+  find . -name "*.h" -exec grep "ciao" '{}' \;
+  
+  KW: "contare quanti file ho trovato", "numero di file trovati" 
+  find . -name "*.h" | wc -l
+  
+  KW: "modificato più recentemente di", "file più nuovo" 
+  find . -newer riferimento.txt
+
+[ grep ] - Ricerca nel Testo
+  KW: "cercare righe che contengono", "righe con la parola" 
+  grep "Errore" log.txt
+  
+  KW: "righe che NON contengono", "escludere parola", "grep inverso" 
+  grep -v "OK" log.txt
+  
+  KW: "contare occorrenze della parola", "quante volte appare" 
+  grep -c "User" log.txt
+  
+  KW: "nomi dei file che contengono la stringa" 
+  grep -l "main" *.c
+  
+  KW: "cercare asterisco", "grep carattere speciale" 
+  # Nota: l'asterisco va tra apici o con backslash
+  grep '*' file.txt
+
+================================================================================
+ SEZIONE III: I/O, REDIREZIONE, PIPE E FILE DESCRIPTOR
+================================================================================
+
+[ INPUT OUTPUT E ERRORI ]
+--------------------------------------------------------------------------------
+| "stampare a video", "scrivere su file", "salvare output", "visualizzare"
+| "sovrascrivere il file", "svuotare file", "aggiungere in coda", "appendere"
+| "scrivere su standard error", "messaggio di errore", "canale 2"
+| "ridirezionare tutto", "sia stdout che stderr", "output e errori insieme"
+| "buttare via output", "silenziare", "nascondere output", "dev null"
+| "leggere input da tastiera", "leggere riga per riga", "senza andare a capo"
+| "leggere da file descriptor", "evitare conflitti di lettura", "exec fd"
+| "passare output a un altro comando", "usare pipe"
+| "ridirigere tutto il ciclo", "scrivere su file una volta sola", "blocco while output"
+--------------------------------------------------------------------------------
+
+[ Redirezione ]
+  KW: "stampare a video", "visualizzare" 
+  echo "Ciao"
+  
+  KW: "senza andare a capo" 
+  echo -n "Ciao"
+  
+  KW: "sovrascrivere il file", "scrivere su file", "svuotare file" 
+  echo "Ciao" > file.txt
+  
+  KW: "aggiungere in coda", "appendere" 
+  echo "Ciao" >> file.txt
+  
+  KW: "scrivere su standard error", "messaggio di errore" 
+  echo "File non trovato" 1>&2
+  
+  KW: "ridirezionare tutto", "sia stdout che stderr", "output e errori insieme" 
+  ./script.sh 1>&2  (O anche: ./script.sh > file 2>&1)
+  
+  KW: "buttare via output", "silenziare", "nascondere output" 
+  comando > /dev/null 2>&1
+  
+  KW: "passare output a un altro comando" 
+  comando1 | comando2
+
+[ exec {FD} ] - Lettura Avanzata (Anti-conflitto)
+  KW: "leggere da file descriptor", "evitare conflitti di lettura", "exec fd" 
+  # DA USARE SE: Usi ssh, ffmpeg o chiedi input utente dentro un ciclo while
+  exec {FD}< file_input.txt
+  while read -u $FD RIGA; do
+      echo "$RIGA"
+  done
+  exec {FD}>&-
+
+[ read ] - Input
+  KW: "leggere input da tastiera" 
+  read VAR
+  
+  KW: "leggere riga per riga" (da file) 
+  while read RIGA; do echo $RIGA; done < file.txt
+  
+  KW: "senza andare a capo", "leggere un carattere" 
+  read -n 1 TASTO
+  
+  KW: "leggere più variabili su una riga" 
+  read NOME COGNOME VOTO
+
+  [ Redirezione Blocchi ] - Ottimizzazione I/O
+    KW: "ridirigere tutto il ciclo", "scrivere su file una volta sola" 
+    # Molto più veloce di fare >> dentro il ciclo. Apre il file una volta sola.
+    while read RIGA; do
+        echo "Elaborato: $RIGA"
+  done < input.txt > output.txt
+
+================================================================================
+ SEZIONE IV: MANIPOLAZIONE STRINGHE, MATEMATICA E TESTO
+================================================================================
+
+[ STRINGHE, NUMERI E CONTEGGI ]
+--------------------------------------------------------------------------------
+| "lunghezza della stringa", "contare caratteri variabile", "quanto è lunga"
+| "lunghezza del nome della directory", "lunghezza del file"
+| "estrarre parte della stringa", "sottostringa", "dal carattere x"
+| "primo carattere", "primi caratteri"
+| "ultimi caratteri", "estrarre la fine", "ultime lettere"
+| "rimuovere estensione", "solo nome file", "rimuovere percorso", "basename"
+| "matematica", "somma", "sottrazione", "incrementare contatore", "modulo"
+| "accumulare lunghezza", "sommare valori"
+| "confrontare numeri", "maggiore", "minore", "uguale"
+| "contare righe file", "contare caratteri file", "wc"
+| "tagliare colonne", "estrarre campo", "csv", "separatore virgola"
+| "ordinare righe", "rimuovere duplicati", "uniq"
+| "sostituire testo", "rimuovere spazi", "escape caratteri speciali"
+| "leggere csv", "separatore campi"
+| "estrarre righe in mezzo", "righe dalla 3 alla 5", "head e tail combinati"
+--------------------------------------------------------------------------------
+
+[ ${...} ] - Manipolazione Stringhe
+  KW: "lunghezza della stringa", "contare caratteri variabile" 
+  LUNGHEZZA=${#VAR}
+  
+  KW: "estrarre parte della stringa", "sottostringa", "dal carattere x" 
+  # Sintassi: ${VAR:partenza:quanti}
+  SOTTO=${VAR:0:1}  # KW: "primo carattere"
+  SOTTO=${VAR:2:3}  # 3 caratteri partendo dal 3° (indice 2)
+  
+  # KW: "ultimi caratteri", "estrarre la fine"
+  # Metodo 1 (Moderno):
+  ULTIMI=${VAR: -2}  (Nota lo spazio prima del meno!)
+  # Metodo 2 (Matematico - Richiesto in alcuni esami):
+  LEN=${#VAR}; (( START = LEN - 2 )); ULTIMI=${VAR:START:2}
+
+  KW: "rimuovere percorso", "basename", "solo nome file" 
+  NOME=${PERCORSO##*/} (Toglie il prefisso più lungo che finisce con /)
+  PRIMO=${PERCORSO%%:*} (Toglie il suffisso più lungo che inizia con :)
+  
+  # KW: "rimuovere estensione"
+  SENZA_EXT=${FILE%%.*}
+  
+  KW: "sostituire testo", "escape caratteri" 
+  NUOVA=${VAR//a/b} (Cambia tutte le 'a' in 'b')
+  ESCAPE=${VAR//\*/\\\*} (Mette \ davanti a *)
+
+[ (( ... )) ] - Matematica
+  KW: "matematica", "somma", "incrementare contatore", "accumulare lunghezza" 
+  (( TOT = TOT + NUM ))
+  (( I++ ))
+  
+  KW: "confrontare numeri", "maggiore", "minore" 
+  if (( A > B )); then ...
+  if (( A == B )); then ...
+  
+  KW: "modulo", "resto divisione" 
+  (( R = A % 2 ))
+
+  KW: "calcoli con la virgola", "numeri decimali", "virgola mobile", "divisione precisa" 
+  echo "scale=2; 10 / 3" | bc  # Output: 3.33
+
+[ Filtri Testo ]
+  KW: "contare righe file" 
+  RIGHE=$(wc -l < file.txt)
+  
+  KW: "contare caratteri file" 
+  CHAR=$(wc -c < file.txt)
+  
+  KW: "tagliare colonne", "estrarre campo", "csv" 
+  cut -d ',' -f 1,3  (Campi 1 e 3 separati da virgola)
+  cut -b 1-3         (Primi 3 byte)
+  
+  KW: "ordinare righe", "rimuovere duplicati" 
+  sort file.txt | uniq
+  sort -k 3 file.txt (Ordina per la 3^ parola)
+  
+  KW: "rimuovere spazi", "escape caratteri speciali" 
+  sed 's/ //g' (Rimuove spazi)
+  sed 's/*/\\*/g' (Escape *)
+
+  KW: "estrarre righe in mezzo", "righe dalla 3 alla 5" 
+  #Esempio: Estrarre righe dalla 3 alla 5 (5 righe totali - prime 2)
+  head -n 5 file.txt | tail -n 3
+
+[ IFS ] - Separatori (CSV e Spazi)
+  KW: "leggere csv", "separatore campi", "gestire spazi nei nomi"
+  IFS=',' 
+  while read CAMPO1 CAMPO2; do ... done < file.csv
+
+================================================================================
+ SEZIONE V: CICLI, LOGICA E ARGOMENTI
+================================================================================
+
+[  IF, FOR, WHILE E PARAMETRI ]
+--------------------------------------------------------------------------------
+| "se il file esiste", "se è una directory", "se il file è leggibile"
+| "se la stringa è vuota", "se le stringhe sono uguali", "stringa non vuota"
+| "file più recente", "confronto date file"
+| "per ogni file nella cartella", "ripetere per tutti i file"
+| "elenca tutti i file escludendo directory corrente e superiore"
+| "finché la condizione è vera", "ciclo while", "fino alla fine del file"
+| "argomenti passati allo script", "numero di argomenti"
+| "tutti gli argomenti", "primo argomento"
+| "indice pari", "indice dispari", "argomento i-esimo", "espansione indiretta"
+| "exit status", "codice errore", "se il comando ha avuto successo"
+--------------------------------------------------------------------------------
+
+[ if ] - Condizioni
+  KW: "se il file esiste"
+  if [[ -e "$FILE" ]]; then ...
+  
+  KW: "se è una directory"
+  if [[ -d "$FILE" ]]; then ...
+  
+  KW: "se il file è leggibile"
+  if [[ -r "$FILE" ]]; then ...
+  
+  KW: "se la stringa è vuota", "stringa non vuota"
+  if [[ -z "$STR" ]]; then ... (Vuota)
+  if [[ -n "$STR" ]]; then ... (Non vuota)
+  
+  # KW: "se le stringhe sono uguali"
+  if [[ "$A" == "$B" ]]; then ...
+  
+  KW: "file più recente", "confronto date file" 
+  if [[ "$F1" -nt "$F2" ]]; then ...
+  
+  KW: "exit status", "se il comando ha avuto successo"
+  comando
+  if (( $? == 0 )); then echo "Successo"; fi
+
+[ for / while ] - Cicli
+  KW: "per ogni file nella cartella", "elenca tutti i file escludendo directory corrente"
+  # (L'asterisco esclude automaticamente . e .. e i nascosti)
+  for f in *; do echo "$f"; done
+  
+  KW: "ciclo numerico"
+  for (( i=0; i<10; i++ )); do ... done
+  
+  KW: "finché la condizione è vera"
+  while (( X < 10 )); do ... done
+
+[ Argomenti ]
+  KW: "numero di argomenti"
+  echo $#
+  
+  KW: "tutti gli argomenti"
+  echo $@
+  
+  KW: "indice pari", "indice dispari", "argomento i-esimo" (Espansione Indiretta)
+  for (( i=1; i<=$#; i++ )); do
+      ARG=${!i}  # <--- MAGIA QUI
+      if (( i % 2 == 0 )); then echo "Pari: $ARG"; fi
+  done
+
+================================================================================
+ SEZIONE VI: PROCESSI, AMBIENTE E BACKGROUND
+================================================================================
+
+[ GESTIONE PROCESSI ]
+--------------------------------------------------------------------------------
+| "lanciare in background", "eseguire contemporaneamente"
+| "prendere il pid", "pid del figlio", "process id"
+| "aspettare la fine", "attendere processo", "wait"
+| "uccidere processo", "killare", "forzare chiusura"
+| "lanciare se stesso", "script ricorsivo"
+| "resistente alla chiusura", "nohup"
+| "visualizzare processi", "lista processi"
+| "variabili d'ambiente", "export", "rendere globale"
+| "debug", "vedere cosa fa lo script"
+| "intercettare ctrl+c", "eseguire comando alla chiusura", 
+| "pulizia file temporanei", "trap"
+| "uccidere tutti i processi con nome", "terminare script multipli", 
+|"killare con regex"
+--------------------------------------------------------------------------------
+
+[ Gestione Processi ]
+  KW: "lanciare in background"
+  ./script.sh &
+  
+  KW: "prendere il pid", "pid del figlio"
+  PID=$!
+  
+  KW: "aspettare la fine", "attendere processo"
+  wait $PID
+  wait      (Li aspetta tutti)
+  
+  KW: "uccidere processo", "killare"
+  kill -9 $PID
+  
+  KW: "resistente alla chiusura", "nohup"
+  nohup ./script.sh &
+  
+  KW: "lanciare se stesso", "script ricorsivo"
+  if (( $1 > 0 )); then
+      ./script.sh $(( $1 - 1 )) &
+  fi
+  
+  KW: "visualizzare processi"
+  ps aux
+
+[ Ambiente e Debug ]
+  KW: "variabili d'ambiente", "export"
+  export VAR="valore"
+  
+  # KW: "debug", "vedere cosa fa lo script" (Non nel testo, ma salva la vita)
+  set -x (Stampa ogni comando prima di eseguirlo)
+  set +x (Disattiva debug)
+
+[ trap ] - Gestione Segnali (Pulizia all'uscita)
+  KW: "intercettare ctrl+c", "eseguire comando alla chiusura", "pulizia file temporanei"
+  # Esegue 'rm temp.txt' se lo script riceve SIGINT (CTRL+C) o SIGTERM
+  trap "rm -f temp.txt; echo 'Pulizia completata'; exit" SIGINT SIGTERM
+
+  KW: "ignorare segnale", "disabilitare ctrl+c"
+  trap "" SIGINT
+
+  [ killall ] - Terminazione Multipla
+  KW: "uccidere tutti i processi con nome", "terminare script multipli"
+  killall nome_processo
+
+  KW: "uccidere con regex", "pattern processi"
+  # Termina tutti i processi che iniziano con "attendi" seguiti da maiuscola
+  killall -r "attendi[[:upper:]]*"
+
+================================================================================
+ SEZIONE VII: RETE E PACCHETTI (EXTRA MA PRESENTI IN AAA.TXT)
+================================================================================
+
+[ WEB E INSTALLAZIONI ]
+--------------------------------------------------------------------------------
+| "scaricare sito", "download file", "wget"
+| "scaricare ricorsivamente", "tutto il sito"
+| "installare pacchetto", "rimuovere programma", "aggiornare lista"
+--------------------------------------------------------------------------------
+
+[ wget ] - Download
+  KW: "scaricare sito", "download file"
+  wget http://sito.com/file.zip
+  
+  KW: "scaricare ricorsivamente", "tutto il sito"
+  wget -r -l 2 -p -k -np URL
+  (r=ricorsivo, l=livello, p=prerequisiti, k=converti link, np=no parent)
+
+[ apt-get ] - Pacchetti
+  KW: "installare pacchetto" 
+  sudo apt-get install nome
+  
+  KW: "rimuovere programma" 
+  sudo apt-get purge nome
+  
+  KW: "aggiornare lista" 
+  sudo apt-get update
+
+================================================================================
+ SEZIONE VIII: REGOLE ANTI-ERRORE (DA LEGGERE PRIMA DI CONSEGNARE)
+================================================================================
+
+1. VARIABILI:
+   Non scrivere `VAR=comando`.
+   Scrivi `VAR=$(comando)`. (Es. `RIGHE=$(wc -l < file.txt)`)
+
+2. SPAZI IF:
+   Non scrivere `if [[$A==$B]]`.
+   Scrivi `if [[ $A == $B ]]`. (Spazi ovunque!)
+
+3. FILE vs NUMERI:
+   File/Stringhe -> `[[ ... ]]`
+   Numeri/Matematica -> `(( ... ))`
+   
+4. VARIABILI VUOTE:
+   `find` può ritornare vuoto. Controlla sempre: `if [[ -n "$VAR" ]]; then`
+   
+5. FIND vs FOR:
+   Se chiedono "directory corrente" -> USA `for f in *`
+   Se chiedono "tutto il sistema/sottocartelle" -> USA `find .`
+
+================================================================================
+ SEZIONE IX: PATTERN ESAMI RISOLTI 
+================================================================================
+
+[ PATTERN ESAMI ]
+--------------------------------------------------------------------------------
+| "nAnB", "validare stringa AAABBB"
+| "contaseparatamente", "pari e dispari su stderr"
+| "cercarecente", "file più recente di tutti"
+| "concatena", "estrarre righe specifiche", "exec fd"
+| "raggruppa", "csv uniq", "contare occorrenze"
+| "ping pong", "sincronizzazione processi", "passaggio testimone", "aspettare file"
+--------------------------------------------------------------------------------
+
+[ nAnB ] - Validazione Stringa 
+  # KW: "validare stringa AAABBB"
+  while (( i < LEN )); do CAR=${STR:$i:1}; if [[ $CAR == "A" ]]; then ...; done
+
+[ Contaseparatamente ] - Pari/Dispari 
+  # KW: "pari e dispari su stderr"
+  for (( i=1; i<=$#; i++ )); do
+      FILE=${!i}
+      if (( i % 2 != 0 )); then echo "Dispari" 1>&2; fi
+  done
+
+[ Cerca Recente ] - Date 
+  # KW: "file più recente di tutti"
+  RECENTE=""; FILES=$(find . -name "*.h")
+  for F in $FILES; do
+      if [[ -z "$RECENTE" || "$F" -nt "$RECENTE" ]]; then RECENTE=$F; fi
+  done
+
+[ Concatena ] - Exec 
+  # KW: "estrarre righe specifiche", "exec fd"
+  exec {FD}< file.txt
+  while read -u $FD RIGA; do ... done
+  exec {FD}>&-
+  
+[ Raggruppa ] - CSV Uniq 
+  # KW: "contare occorrenze", "csv uniq"
+  while read ...; do
+     NUM=$(grep -c "motivo" file.txt)
+  done | sort | uniq
+
+[ Ping Pong ] - Sincronizzazione File 
+  # KW: "passaggio testimone", "aspettare che l'altro finisca"
+  # Esempio: Processo A aspetta che B cancelli 'turno_A.txt' e crei 'turno_B.txt'
+
+while true; do
+    # 1. Attesa attiva (Busy Waiting) finché non tocca a me
+    # Verifica esistenza file dell'altro processo (es. pong.txt)
+    while [[ -e "turno_B.txt" ]]; do
+        sleep 2  # Richiesto attesa 2 secondi
+    done
+    
+    # 2. Sezione Critica / Azione
+    echo "Tocca a me (Ping)!"
+    
+    # 3. Passaggio testimone
+    touch "turno_B.txt" # Creo il file per l'altro
+    rm "turno_A.txt"    # Rimuovo il mio se necessario
+done
