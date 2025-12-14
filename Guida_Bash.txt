@@ -4,571 +4,848 @@
 
 ISTRUZIONI:
 1. Premi CTRL+F.
-2. Scrivi quello che devi fare (es: "scaricare sito", "file con spazi", "debug").
-3. Il risultato ti porterà al codice esatto.
+2. Cerca una qualsiasi frase che ti viene in mente (es. "somma numeri", "file recente").
+3. Ogni esempio ha 7-10 frasi chiave per essere trovato facilmente.
 
 ================================================================================
  SEZIONE I: FILE SYSTEM, CREAZIONE, NAVIGAZIONE E PERMESSI
 ================================================================================
 
-[ GESTIONE FILE E CARTELLE ]
+[ BOX DI RICERCA ]
 --------------------------------------------------------------------------------
-| "creare una directory", "creare cartella", "creare percorso completo"
-| "sottodirectory che contiene", "struttura annidata", "albero di directory"
-| "creare file vuoto", "creare tre file", "creare file multipli", "generare"
-| "spostare file", "rinominare file", "cambiare nome", "cambiare estensione"
-| "copiare file", "copiare cartella", "copia ricorsiva", "duplicare"
-| "eliminare file", "cancellare", "rimuovere directory", "eliminare tutto"
-| "dove mi trovo", "percorso corrente", "directory di lavoro", "pwd"
-| "visualizzare file", "lista file", "file nascosti", "inizia per punto"
-| "ordinare per dimensione", "visualizzare dettagli", "permessi", "data"
-| "rendere eseguibile", "cambiare permessi", "chmod", "proprietario"
-| "file con spazi nel nome", "gestire spazi", "nomi strani"
+| "creare una directory", "creare cartella", "make directory", "mkdir", "nuova cartella", "generare directory", "crea percorso", "nuova dir"
+| "sottodirectory che contiene", "struttura annidata", "creare percorso completo", "albero cartelle", "madre e figlia", "mkdir ricorsivo", "directory dentro directory", "path completo"
+| "creare file vuoto", "nuovo file", "generare file", "touch", "crea file", "file bianco", "rigenerare data modifica", "file inesistente"
+| "creare tre file", "creare file multipli", "generazione massiva", "range file", "file sequenziali", "tanti file insieme", "file numerati", "creazione batch"
+| "file con spazi nel nome", "creare nome con spazi", "nomi strani", "gestire spazi", "quote file", "nome file composto", "file white space", "virgolette filename"
+| "spostare file", "muovere file", "sposta in cartella", "mv spostamento", "trasferire file", "cambiare percorso file", "move file"
+| "rinominare file", "cambiare nome", "rename", "nuovo nome", "mv rinomina", "modificare nome file", "cambia filename"
+| "cambiare estensione", "rinomina dinamica", "sostituire estensione", "batch rename", "cambia suffisso", "mass rename", "nuova estensione", "rinominare tutti i txt"
+| "copiare file", "duplicare file", "backup file", "cp copia", "copia singola", "creare duplicato", "copy file", "clone file"
+| "copiare cartella", "copia ricorsiva", "duplicare directory", "backup cartella", "cp -r", "copia albero", "copiare tutto il contenuto", "copy dir"
+| "eliminare file", "cancellare", "rimuovere", "delete file", "rm cancella", "togliere file", "distruggere file", "remove file"
+| "rimuovere directory", "eliminare tutto", "cancellare ricorsivamente", "rimuovi cartella", "rm -rf", "pulire cartella", "delete dir", "cancellazione totale"
+| "cancellare file con spazi", "rimuovere nome spazi", "del quote", "rm spazi", "eliminare file nome strano", "quote delete"
+| "visualizzare file", "lista file", "elencare contenuto", "ls visualizza", "mostra cartella", "list files", "vedere cosa c'è", "elenco directory"
+| "file nascosti", "inizia per punto", "dot files", "ls -a", "vedere nascosti", "show hidden", "file di configurazione", "elenco completo"
+| "visualizzare dettagli", "permessi ls", "lista lunga", "ls -la", "info file", "vedere proprietario", "vedere dimensioni", "list details"
+| "ordinare per dimensione", "file più grandi", "sort size", "ls size", "ordinamento grandezza", "file pesanti prima", "list by size"
+| "ordinare per data", "ultimi modificati", "sort time", "file recenti ls", "ordinamento temporale", "modificati di recente", "list by date", "ultimi file"
+| "rendere eseguibile", "permesso esecuzione", "chmod +x", "eseguire script", "runnable", "dare permessi", "abilitare esecuzione"
+| "cambiare permessi", "leggibile e eseguibile", "chmod 755", "settare permessi", "cambiare mode", "diritti file", "read write execute"
+| "proprietario", "cambiare owner", "chown", "cambia utente file", "cambiare gruppo", "change owner", "possessore file"
 --------------------------------------------------------------------------------
 
 [ mkdir ] - Creazione Cartelle
-  KW: "creare una directory", "creare cartella" 
+  "creare una directory", "creare cartella", "make directory", "mkdir", "nuova cartella", "generare directory", "crea percorso", "nuova dir"
   mkdir cartella
   
-  # KW: "sottodirectory che contiene", "struttura annidata", "creare percorso completo"
+  "sottodirectory che contiene", "struttura annidata", "creare percorso completo", "albero cartelle", "madre e figlia", "mkdir ricorsivo", "directory dentro directory", "path completo"
   mkdir -p A1/B2/C3
 
 [ touch ] - Creazione File
-  KW: "creare file vuoto" 
+  "creare file vuoto", "nuovo file", "generare file", "touch", "crea file", "file bianco", "rigenerare data modifica", "file inesistente"
   touch file.txt
   
-  KW: "creare tre file", "creare file multipli" 
+  "creare tre file", "creare file multipli", "generazione massiva", "range file", "file sequenziali", "tanti file insieme", "file numerati", "creazione batch"
   touch A1/B2/C3/{1,2,3}.txt
   
-  KW: "file con spazi nel nome", "creare nome con spazi" 
+  "file con spazi nel nome", "creare nome con spazi", "nomi strani", "gestire spazi", "quote file", "nome file composto", "file white space", "virgolette filename"
   touch "file con spazi.txt"
 
 [ mv ] - Spostare o Rinominare
-  KW: "spostare file" 
+  "spostare file", "muovere file", "sposta in cartella", "mv spostamento", "trasferire file", "cambiare percorso file", "move file"
   mv file.txt cartella/
   
-  KW: "rinominare file", "cambiare nome" 
+  "rinominare file", "cambiare nome", "rename", "nuovo nome", "mv rinomina", "modificare nome file", "cambia filename"
   mv vecchio.txt nuovo.txt
   
-  KW: "cambiare estensione", "rinomina dinamica" 
+  "cambiare estensione", "rinomina dinamica", "sostituire estensione", "batch rename", "cambia suffisso", "mass rename", "nuova estensione", "rinominare tutti i txt"
   for f in *.txt; do mv "$f" "${f%.txt}.bak"; done
 
 [ cp ] - Copiare
-  KW: "copiare file" 
+  "copiare file", "duplicare file", "backup file", "cp copia", "copia singola", "creare duplicato", "copy file", "clone file"
   cp file.txt copia.txt
   
-  KW: "copiare cartella", "copia ricorsiva", "duplicare directory" 
+  "copiare cartella", "copia ricorsiva", "duplicare directory", "backup cartella", "cp -r", "copia albero", "copiare tutto il contenuto", "copy dir"
   cp -R cartella_orig cartella_dest
 
 [ rm ] - Cancellare
-  KW: "eliminare file", "cancellare" 
+  "eliminare file", "cancellare", "rimuovere", "delete file", "rm cancella", "togliere file", "distruggere file", "remove file"
   rm file.txt
   
-  KW: "rimuovere directory", "eliminare tutto", "cancellare ricorsivamente" 
+  "rimuovere directory", "eliminare tutto", "cancellare ricorsivamente", "rimuovi cartella", "rm -rf", "pulire cartella", "delete dir", "cancellazione totale"
   rm -rf directory/
   
-  KW: "cancellare file con spazi" 
+  "cancellare file con spazi", "rimuovere nome spazi", "del quote", "rm spazi", "eliminare file nome strano", "quote delete"
   rm "file con spazi.txt"
 
 [ ls ] - Visualizzazione
-  KW: "visualizzare file", "lista file" 
+  "visualizzare file", "lista file", "elencare contenuto", "ls visualizza", "mostra cartella", "list files", "vedere cosa c'è", "elenco directory"
   ls
   
-  KW: "file nascosti", "inizia per punto" 
+  "file nascosti", "inizia per punto", "dot files", "ls -a", "vedere nascosti", "show hidden", "file di configurazione", "elenco completo"
   ls -d .*
   
-  KW: "visualizzare dettagli", "permessi" 
+  "visualizzare dettagli", "permessi ls", "lista lunga", "ls -la", "info file", "vedere proprietario", "vedere dimensioni", "list details"
   ls -la
   
-  KW: "ordinare per dimensione", "file più grandi" 
+  "ordinare per dimensione", "file più grandi", "sort size", "ls size", "ordinamento grandezza", "file pesanti prima", "list by size"
   ls -S1
   
-  # KW: "ordinare per data", "ultimi modificati" (utile per check rapidi)
+  "ordinare per data", "ultimi modificati", "sort time", "file recenti ls", "ordinamento temporale", "modificati di recente", "list by date", "ultimi file"
   ls -lt
 
 [ chmod / chown ] - Permessi
-  KW: "rendere eseguibile" 
+  "rendere eseguibile", "permesso esecuzione", "chmod +x", "eseguire script", "runnable", "dare permessi", "abilitare esecuzione"
   chmod +x script.sh
   
-  KW: "cambiare permessi", "leggibile e eseguibile" 
+  "cambiare permessi", "leggibile e eseguibile", "chmod 755", "settare permessi", "cambiare mode", "diritti file", "read write execute"
   chmod 755 file
   
-  KW: "proprietario", "cambiare owner" 
+  "proprietario", "cambiare owner", "chown", "cambia utente file", "cambiare gruppo", "change owner", "possessore file"
   chown utente:gruppo file.txt
 
 ================================================================================
  SEZIONE II: RICERCA AVANZATA (FIND) E FILTRI (GREP)
 ================================================================================
 
-[ TROVARE E FILTRARE ]
+[ BOX DI RICERCA ]
 --------------------------------------------------------------------------------
-|  "cercare tra tutti i file", "trovare file", "cercare file con estensione"
-|  "cercare ricorsivamente", "cercare nelle sottodirectory"
-|  "solo file", "solo directory", "escludere file"
-|  "non cercare nelle sottodirectory", "solo nella cartella corrente"
-|  "escludendo la directory di partenza", "escludere root della ricerca"
-|  "modificato più recentemente di", "file più nuovo", "confronto date"
-|  "eseguire un comando sui file trovati", "fare grep sui file trovati"
-|  "contare quanti file ho trovato", "numero di file trovati"
-|  "cercare righe che contengono", "righe con la parola", "filtrare testo"
-|  "righe che NON contengono", "escludere parola", "grep inverso"
-|  "contare occorrenze della parola", "quante volte appare"
-|  "nomi dei file che contengono la stringa"
-|  "cercare asterisco", "cercare caratteri speciali"
+| "cercare tra tutti i file", "trovare file", "cercare file con estensione", "find name", "cerca per nome", "ricerca globale", "trova ovunque", "search file"
+| "solo file", "cercare files", "no directory", "find type f", "escludere cartelle", "solo documenti", "type file", "solo oggetti file"
+| "solo directory", "cercare cartelle", "no files", "find type d", "solo cartelle", "escludere file", "type dir", "trova directory"
+| "non cercare nelle sottodirectory", "solo nella cartella corrente", "no ricorsione", "maxdepth 1", "solo qui", "livello corrente", "non scendere", "flat search"
+| "escludendo la directory di partenza", "escludere root della ricerca", "partire da sottocartelle", "mindepth 2", "solo figli", "no parent dir", "dal secondo livello", "exclude root"
+| "modificato più recentemente di", "file più nuovo", "confronto date", "newer than", "aggiornato dopo", "modifica recente", "data successiva", "tempo file"
+| "file più vecchio di", "older than", "confronto tempo", "file antichi", "modificato prima di", "data precedente", "not newer", "vecchi file"
+| "eseguire un comando sui file trovati", "fare grep sui file trovati", "exec find", "azione su trovati", "esegui su risultati", "comando per ogni file", "find exec", "process found files"
+| "contare quanti file ho trovato", "numero di file trovati", "count find results", "quanti sono", "conteggio risultati", "wc -l find", "numero occorrenze file"
+| "cercare righe che contengono", "righe con la parola", "filtrare testo", "grep search", "trova stringa", "cerca nel contenuto", "linee con testo", "match string"
+| "righe che NON contengono", "escludere parola", "grep inverso", "invert match", "senza parola", "rimuovere linee", "non match", "exclude string"
+| "contare occorrenze della parola", "quante volte appare", "count matches", "numero ripetizioni", "conteggio parole", "frequenza parola", "quante righe hanno", "count grep"
+| "nomi dei file che contengono la stringa", "quali file hanno la parola", "grep files list", "elenco file con testo", "dove si trova la parola", "file list match", "trova in quali file"
+| "cercare asterisco", "cercare caratteri speciali", "grep escape", "simboli strani", "escape char", "cerca meta caratteri", "find special chars", "grep literal"
+| "cercare con permessi", "file eseguibili", "permessi 755", "find permissions", "cerca permessi", "file leggibili"
 --------------------------------------------------------------------------------
 
-[ find ] - Il Motore di Ricerca (USALO QUANDO CERCHI OVUNQUE)
-  KW: "cercare tra tutti i file", "cercare file con estensione" 
+[ find ] - Il Motore di Ricerca
+  "cercare tra tutti i file", "trovare file", "cercare file con estensione", "find name", "cerca per nome", "ricerca globale", "trova ovunque", "search file"
   find /percorso -name "*.txt"
   
-  KW: "solo file" 
+  "solo file", "cercare files", "no directory", "find type f", "escludere cartelle", "solo documenti", "type file", "solo oggetti file"
   find . -type f
   
-  KW: "solo directory" 
+  "solo directory", "cercare cartelle", "no files", "find type d", "solo cartelle", "escludere file", "type dir", "trova directory"
   find . -type d
   
-  KW: "non cercare nelle sottodirectory", "solo nella cartella corrente" 
+  "non cercare nelle sottodirectory", "solo nella cartella corrente", "no ricorsione", "maxdepth 1", "solo qui", "livello corrente", "non scendere", "flat search"
   find . -maxdepth 1
   
-  KW: "escludendo la directory di partenza", "escludere root della ricerca" 
+  "escludendo la directory di partenza", "escludere root della ricerca", "partire da sottocartelle", "mindepth 2", "solo figli", "no parent dir", "dal secondo livello", "exclude root"
   find . -mindepth 2
   
-  KW: "eseguire un comando sui file trovati", "fare grep sui file trovati" 
+  "eseguire un comando sui file trovati", "fare grep sui file trovati", "exec find", "azione su trovati", "esegui su risultati", "comando per ogni file", "find exec", "process found files"
   find . -name "*.h" -exec grep "ciao" '{}' \;
   
-  KW: "contare quanti file ho trovato", "numero di file trovati" 
+  "contare quanti file ho trovato", "numero di file trovati", "count find results", "quanti sono", "conteggio risultati", "wc -l find", "numero occorrenze file"
   find . -name "*.h" | wc -l
   
-  KW: "modificato più recentemente di", "file più nuovo" 
+  "modificato più recentemente di", "file più nuovo", "confronto date", "newer than", "aggiornato dopo", "modifica recente", "data successiva", "tempo file"
   find . -newer riferimento.txt
 
+  "file più vecchio di", "older than", "confronto tempo", "file antichi", "modificato prima di", "data precedente", "not newer", "vecchi file"
+  find . ! -newer riferimento.txt
+
+  "cercare con permessi", "file eseguibili", "permessi 755", "find permissions", "cerca permessi", "file leggibili"
+  find . -perm 755
+
 [ grep ] - Ricerca nel Testo
-  KW: "cercare righe che contengono", "righe con la parola" 
+  "cercare righe che contengono", "righe con la parola", "filtrare testo", "grep search", "trova stringa", "cerca nel contenuto", "linee con testo", "match string"
   grep "Errore" log.txt
   
-  KW: "righe che NON contengono", "escludere parola", "grep inverso" 
+  "righe che NON contengono", "escludere parola", "grep inverso", "invert match", "senza parola", "rimuovere linee", "non match", "exclude string"
   grep -v "OK" log.txt
   
-  KW: "contare occorrenze della parola", "quante volte appare" 
+  "contare occorrenze della parola", "quante volte appare", "count matches", "numero ripetizioni", "conteggio parole", "frequenza parola", "quante righe hanno", "count grep"
   grep -c "User" log.txt
   
-  KW: "nomi dei file che contengono la stringa" 
+  "nomi dei file che contengono la stringa", "quali file hanno la parola", "grep files list", "elenco file con testo", "dove si trova la parola", "file list match", "trova in quali file"
   grep -l "main" *.c
   
-  KW: "cercare asterisco", "grep carattere speciale" 
-  # Nota: l'asterisco va tra apici o con backslash
+  "cercare asterisco", "cercare caratteri speciali", "grep escape", "simboli strani", "escape char", "cerca meta caratteri", "find special chars", "grep literal"
   grep '*' file.txt
 
 ================================================================================
  SEZIONE III: I/O, REDIREZIONE, PIPE E FILE DESCRIPTOR
 ================================================================================
 
-[ INPUT OUTPUT E ERRORI ]
+[ BOX DI RICERCA ]
 --------------------------------------------------------------------------------
-| "stampare a video", "scrivere su file", "salvare output", "visualizzare"
-| "sovrascrivere il file", "svuotare file", "aggiungere in coda", "appendere"
-| "scrivere su standard error", "messaggio di errore", "canale 2"
-| "ridirezionare tutto", "sia stdout che stderr", "output e errori insieme"
-| "buttare via output", "silenziare", "nascondere output", "dev null"
-| "leggere input da tastiera", "leggere riga per riga", "senza andare a capo"
-| "leggere da file descriptor", "evitare conflitti di lettura", "exec fd"
-| "passare output a un altro comando", "usare pipe"
-| "ridirigere tutto il ciclo", "scrivere su file una volta sola", "blocco while output"
+| "stampare a video", "visualizzare", "echo message", "scrivere su schermo", "print text", "mostrare messaggio", "output console", "scrivi"
+| "senza andare a capo", "no newline", "echo inline", "stessa riga", "no return", "continuare su riga", "echo -n", "riga singola"
+| "sovrascrivere il file", "scrivere su file", "svuotare file", "redirect overwrite", "> file", "salvare su file", "rimpiazzare contenuto", "nuovo contenuto file"
+| "aggiungere in coda", "appendere", "append redirect", "non cancellare", ">> file", "aggiungi a fine file", "scrivere sotto", "preservare contenuto"
+| "scrivere su standard error", "messaggio di errore", "canale 2", "stderr output", "1>&2", "redirect stderr", "stampare errore", "canale errori"
+| "ridirezionare tutto", "sia stdout che stderr", "output e errori insieme", "redirect all", "&>", "tutto su file", "loggare tutto", "merge output"
+| "buttare via output", "silenziare", "nascondere output", "dev null", "sopprimere", "non mostrare nulla", "quiet mode", "cestinare output"
+| "contare righe stderr", "numerare errori", "ignorare stdout e contare stderr", "pipe solo errori", "dev null stderr", "count error lines", "padre conta errori figlio"
+| "passare output a un altro comando", "usare pipe", "tubo", "pipeline", "|", "concatenare comandi", "filtro pipe", "output to input"
+| "leggere da file descriptor", "evitare conflitti di lettura", "exec fd", "aprire fd", "custom fd", "canale personalizzato", "gestione file descriptor", "advanced read"
+| "leggere input da tastiera", "chiedere variabile", "user input", "read var", "input utente", "inserire dati", "leggere da stdin", "prompt"
+| "leggere riga per riga", "scorrere file", "read loop", "while read", "lettura file", "processare linee", "iterare righe", "line by line"
+| "lettura carattere per carattere", "leggere 1 byte", "read char", "parse char", "uno alla volta", "read -N 1", "scorrere caratteri", "byte by byte"
+| "ridirigere tutto il ciclo", "scrivere su file una volta sola", "blocco while output", "redirect loop", "salvare risultato ciclo", "scrivere output while", "loop to file"
+| "leggere file senza accapo finale", "problema ultima riga ignorata", "file corrotto", "no newline fix", "ultima riga mancante", "read check", "file non terminato", "fix looping"
+| "csv con virgole", "saltare colonne", "ignorare campi", "leggere csv", "parsing virgola", "campi separati", "file dati", "csv read"
+| "campi tra virgolette", "stringhe confinate", "campi con spazi dentro", "parsing quote", "gestione csv complesso", "campi quotati", "virgolette csv", "quote split"
 --------------------------------------------------------------------------------
 
-[ Redirezione ]
-  KW: "stampare a video", "visualizzare" 
+[ Redirezione Base ]
+  "stampare a video", "visualizzare", "echo message", "scrivere su schermo", "print text", "mostrare messaggio", "output console", "scrivi"
   echo "Ciao"
   
-  KW: "senza andare a capo" 
+  "senza andare a capo", "no newline", "echo inline", "stessa riga", "no return", "continuare su riga", "echo -n", "riga singola"
   echo -n "Ciao"
   
-  KW: "sovrascrivere il file", "scrivere su file", "svuotare file" 
+  "sovrascrivere il file", "scrivere su file", "svuotare file", "redirect overwrite", "> file", "salvare su file", "rimpiazzare contenuto", "nuovo contenuto file"
   echo "Ciao" > file.txt
   
-  KW: "aggiungere in coda", "appendere" 
+  "aggiungere in coda", "appendere", "append redirect", "non cancellare", ">> file", "aggiungi a fine file", "scrivere sotto", "preservare contenuto"
   echo "Ciao" >> file.txt
   
-  KW: "scrivere su standard error", "messaggio di errore" 
+  "scrivere su standard error", "messaggio di errore", "canale 2", "stderr output", "1>&2", "redirect stderr", "stampare errore", "canale errori"
   echo "File non trovato" 1>&2
   
-  KW: "ridirezionare tutto", "sia stdout che stderr", "output e errori insieme" 
-  ./script.sh 1>&2  (O anche: ./script.sh > file 2>&1)
+  "ridirezionare tutto", "sia stdout che stderr", "output e errori insieme", "redirect all", "&>", "tutto su file", "loggare tutto", "merge output"
+  ./script.sh > file 2>&1
   
-  KW: "buttare via output", "silenziare", "nascondere output" 
+  "buttare via output", "silenziare", "nascondere output", "dev null", "sopprimere", "non mostrare nulla", "quiet mode", "cestinare output"
   comando > /dev/null 2>&1
+
+  "contare righe stderr", "numerare errori", "ignorare stdout e contare stderr", "pipe solo errori", "dev null stderr", "count error lines", "padre conta errori figlio"
+  # SINTASSI MAGICA: (cmd > /dev/null) 2>&1 | wc -l
+  # Il blocco () butta via lo stdout, poi 2>&1 sposta lo stderr sullo stdout (che è l'unica cosa che esce dalle parentesi)
+  NUM_ERRORI=$(( ./script.sh > /dev/null ) 2>&1 | wc -l)
   
-  KW: "passare output a un altro comando" 
+  "passare output a un altro comando", "usare pipe", "tubo", "pipeline", "|", "concatenare comandi", "filtro pipe", "output to input"
   comando1 | comando2
 
-[ exec {FD} ] - Lettura Avanzata (Anti-conflitto)
-  KW: "leggere da file descriptor", "evitare conflitti di lettura", "exec fd" 
-  # DA USARE SE: Usi ssh, ffmpeg o chiedi input utente dentro un ciclo while
+[ exec {FD} ] - Lettura Avanzata
+  "leggere da file descriptor", "evitare conflitti di lettura", "exec fd", "aprire fd", "custom fd", "canale personalizzato", "gestione file descriptor", "advanced read"
   exec {FD}< file_input.txt
   while read -u $FD RIGA; do
       echo "$RIGA"
   done
   exec {FD}>&-
 
-[ read ] - Input
-  KW: "leggere input da tastiera" 
+[ read ] - Input e Cicli
+  "leggere input da tastiera", "chiedere variabile", "user input", "read var", "input utente", "inserire dati", "leggere da stdin", "prompt"
   read VAR
   
-  KW: "leggere riga per riga" (da file) 
+  "leggere riga per riga", "scorrere file", "read loop", "while read", "lettura file", "processare linee", "iterare righe", "line by line"
   while read RIGA; do echo $RIGA; done < file.txt
   
-  KW: "senza andare a capo", "leggere un carattere" 
-  read -n 1 TASTO
-  
-  KW: "leggere più variabili su una riga" 
-  read NOME COGNOME VOTO
-
-  [ Redirezione Blocchi ] - Ottimizzazione I/O
-    KW: "ridirigere tutto il ciclo", "scrivere su file una volta sola" 
-    # Molto più veloce di fare >> dentro il ciclo. Apre il file una volta sola.
-    while read RIGA; do
-        echo "Elaborato: $RIGA"
+  "ridirigere tutto il ciclo", "scrivere su file una volta sola", "blocco while output", "redirect loop", "salvare risultato ciclo", "scrivere output while", "loop to file"
+  while read RIGA; do
+      echo "Elaborato: $RIGA"
   done < input.txt > output.txt
 
+  "leggere file senza accapo finale", "problema ultima riga ignorata", "file corrotto", "no newline fix", "ultima riga mancante", "read check", "file non terminato", "fix looping"
+  while read RIGA || [[ -n "$RIGA" ]]; do
+      echo "$RIGA"
+  done < file_senza_newline.txt
+
+  "lettura carattere per carattere", "leggere 1 byte", "read char", "parse char", "uno alla volta", "read -N 1", "scorrere caratteri", "byte by byte"
+  while read -N 1 -r CARATTERE; do 
+      echo "Letto: $CARATTERE"
+  done < file.txt
+
+[ CSV Parsing ]
+  "csv con virgole", "saltare colonne", "ignorare campi", "leggere csv", "parsing virgola", "campi separati", "file dati", "csv read"
+  IFS=',' 
+  while read PRIMA SECONDA TERZA; do
+      echo "$PRIMA $TERZA"
+  done < file.csv
+
+  "campi tra virgolette", "stringhe confinate", "campi con spazi dentro", "parsing quote", "gestione csv complesso", "campi quotati", "virgolette csv", "quote split"
+  while read RIGA; do
+      TERZO_CAMPO=$(echo "$RIGA" | cut -d '"' -f 6)
+      echo "$TERZO_CAMPO"
+  done < file_con_quote.txt
+
 ================================================================================
- SEZIONE IV: MANIPOLAZIONE STRINGHE, MATEMATICA E TESTO
+ SEZIONE IV: STRINGHE, MATEMATICA E MANIPOLAZIONE ELEMENTI
 ================================================================================
 
-[ STRINGHE, NUMERI E CONTEGGI ]
+[ BOX DI RICERCA ]
 --------------------------------------------------------------------------------
-| "lunghezza della stringa", "contare caratteri variabile", "quanto è lunga"
-| "lunghezza del nome della directory", "lunghezza del file"
-| "estrarre parte della stringa", "sottostringa", "dal carattere x"
-| "primo carattere", "primi caratteri"
-| "ultimi caratteri", "estrarre la fine", "ultime lettere"
-| "rimuovere estensione", "solo nome file", "rimuovere percorso", "basename"
-| "matematica", "somma", "sottrazione", "incrementare contatore", "modulo"
-| "accumulare lunghezza", "sommare valori"
-| "confrontare numeri", "maggiore", "minore", "uguale"
-| "contare righe file", "contare caratteri file", "wc"
-| "tagliare colonne", "estrarre campo", "csv", "separatore virgola"
-| "ordinare righe", "rimuovere duplicati", "uniq"
-| "sostituire testo", "rimuovere spazi", "escape caratteri speciali"
-| "leggere csv", "separatore campi"
-| "estrarre righe in mezzo", "righe dalla 3 alla 5", "head e tail combinati"
+| "lunghezza della stringa", "contare caratteri variabile", "size string", "len var", "quanto lunga", "strlen", "numero chars", "dimensione testo"
+| "estrarre parte della stringa", "sottostringa", "dal carattere x", "substring", "slice string", "prendere pezzo", "tagliare stringa", "string slice"
+| "parsing sicuro", "evitare indici fissi", "cut con delimitatore", "formato variabile", "parsing flessibile", "tagliare stringa sicuro", "safe slice"
+| "ultimi caratteri", "estrarre la fine", "ultime lettere", "suffix", "tail string", "parte finale", "leggere ultimi char", "end of string"
+| "rimuovere percorso", "basename", "solo nome file", "no path", "estrarre nome", "togliere path", "solo file", "clean path"
+| "rimuovere estensione", "solo nome senza estensione", "no ext", "remove suffix", "togliere .txt", "clean extension", "nome pulito", "no dot"
+| "sostituire testo", "escape caratteri", "replace string", "cambiare caratteri", "substitute", "find replace", "cambia tutte le occorrenze", "swap text"
+| "concatenare stringhe", "unire variabili", "unire testo", "string concatenation", "sommare stringhe", "append vars", "incollare variabili", "join text"
+| "accumulare in stringa", "creare lista", "append string", "accumulatore testo", "costruire stringa", "lista dinamica", "aggiungere a var", "grow string"
+| "matematica", "somma", "incrementare contatore", "accumulare lunghezza", "operazioni", "più meno", "calcoli matematici", "algebra", "aumentare var"
+| "confrontare numeri", "maggiore", "minore", "uguale", "check number", "if matematico", "valutare numeri", "test numerico"
+| "modulo", "resto divisione", "pari o dispari", "mod operator", "divisibilità", "multiplo di", "calcolo resto", "remainder"
+| "calcoli con la virgola", "numeri decimali", "virgola mobile", "divisione precisa", "bc calculator", "math float", "precisione", "decimal math"
+| "sommare valori", "accumulatore somma", "totale in ciclo", "sum loop", "addizione ciclo", "calcolo totale", "running total", "sommatoria"
+| "contare righe file", "wc lines", "numero linee", "count lines", "quante righe", "file length", "size lines", "wc -l"
+| "contare caratteri file", "wc chars", "numero byte", "count bytes", "quanti caratteri", "file size chars", "byte count", "wc -c"
+| "tagliare colonne", "estrarre campo", "csv cut", "campo specifico", "cut field", "prendere colonna", "split columns", "parsa riga"
+| "ordinare righe", "rimuovere duplicati", "sort uniq", "lista unica", "ordine alfabetico", "mettere in ordine", "alfabetizzare", "organizzare lista"
+| "estrarre righe in mezzo", "righe dalla 3 alla 5", "range righe", "head tail combination", "slice file", "righe centrali", "prendere intervallo", "middle lines"
 --------------------------------------------------------------------------------
 
 [ ${...} ] - Manipolazione Stringhe
-  KW: "lunghezza della stringa", "contare caratteri variabile" 
+  "lunghezza della stringa", "contare caratteri variabile", "size string", "len var", "quanto lunga", "strlen", "numero chars", "dimensione testo"
   LUNGHEZZA=${#VAR}
   
-  KW: "estrarre parte della stringa", "sottostringa", "dal carattere x" 
-  # Sintassi: ${VAR:partenza:quanti}
-  SOTTO=${VAR:0:1}  # KW: "primo carattere"
-  SOTTO=${VAR:2:3}  # 3 caratteri partendo dal 3° (indice 2)
+  "estrarre parte della stringa", "sottostringa", "dal carattere x", "substring", "slice string", "prendere pezzo", "tagliare stringa", "string slice"
+  # ATTENZIONE: Usare solo se la struttura è FISSA (es. data sempre 10 char)
+  SOTTO=${VAR:0:1}  # Primo carattere
   
-  # KW: "ultimi caratteri", "estrarre la fine"
-  # Metodo 1 (Moderno):
-  ULTIMI=${VAR: -2}  (Nota lo spazio prima del meno!)
-  # Metodo 2 (Matematico - Richiesto in alcuni esami):
-  LEN=${#VAR}; (( START = LEN - 2 )); ULTIMI=${VAR:START:2}
+  "parsing sicuro", "evitare indici fissi", "cut con delimitatore", "formato variabile", "parsing flessibile", "tagliare stringa sicuro", "safe slice"
+  # SE LA LUNGHEZZA CAMBIA (es. "9:00" vs "10:00"), NON USARE SOTTOSTRINGA FISSA!
+  # USARE CUT con delimitatore
+  ORA=$(echo "$RIGA" | cut -d ';' -f 2)
 
-  KW: "rimuovere percorso", "basename", "solo nome file" 
-  NOME=${PERCORSO##*/} (Toglie il prefisso più lungo che finisce con /)
-  PRIMO=${PERCORSO%%:*} (Toglie il suffisso più lungo che inizia con :)
+  "ultimi caratteri", "estrarre la fine", "ultime lettere", "suffix", "tail string", "parte finale", "leggere ultimi char", "end of string"
+  ULTIMI=${VAR: -2}
+
+  "concatenare stringhe", "unire variabili", "unire testo", "string concatenation", "sommare stringhe", "append vars", "incollare variabili", "join text"
+  PIPPO="${USER}${HOME}"
+
+  "accumulare in stringa", "creare lista", "append string", "accumulatore testo", "costruire stringa", "lista dinamica", "aggiungere a var", "grow string"
+  LISTA="${LISTA} ${NUOVO_FILE}"
   
-  # KW: "rimuovere estensione"
+  "rimuovere percorso", "basename", "solo nome file", "no path", "estrarre nome", "togliere path", "solo file", "clean path"
+  NOME=${PERCORSO##*/}
+  
+  "rimuovere estensione", "solo nome senza estensione", "no ext", "remove suffix", "togliere .txt", "clean extension", "nome pulito", "no dot"
   SENZA_EXT=${FILE%%.*}
   
-  KW: "sostituire testo", "escape caratteri" 
-  NUOVA=${VAR//a/b} (Cambia tutte le 'a' in 'b')
-  ESCAPE=${VAR//\*/\\\*} (Mette \ davanti a *)
+  "sostituire testo", "escape caratteri", "replace string", "cambiare caratteri", "substitute", "find replace", "cambia tutte le occorrenze", "swap text"
+  NUOVA=${VAR//a/b}
+  ESCAPE=${VAR//\*/\\\*}
 
 [ (( ... )) ] - Matematica
-  KW: "matematica", "somma", "incrementare contatore", "accumulare lunghezza" 
+  "matematica", "somma", "incrementare contatore", "accumulare lunghezza", "operazioni", "più meno", "calcoli matematici", "algebra", "aumentare var"
   (( TOT = TOT + NUM ))
   (( I++ ))
   
-  KW: "confrontare numeri", "maggiore", "minore" 
+  "confrontare numeri", "maggiore", "minore", "uguale", "check number", "if matematico", "valutare numeri", "test numerico"
   if (( A > B )); then ...
-  if (( A == B )); then ...
   
-  KW: "modulo", "resto divisione" 
+  "modulo", "resto divisione", "pari o dispari", "mod operator", "divisibilità", "multiplo di", "calcolo resto", "remainder"
   (( R = A % 2 ))
+  
+  "sommare valori", "accumulatore somma", "totale in ciclo", "sum loop", "addizione ciclo", "calcolo totale", "running total", "sommatoria"
+  TOTALE=0
+  while read NUM; do (( TOTALE = TOTALE + NUM )); done < numeri.txt
 
-  KW: "calcoli con la virgola", "numeri decimali", "virgola mobile", "divisione precisa" 
-  echo "scale=2; 10 / 3" | bc  # Output: 3.33
+  "calcoli con la virgola", "numeri decimali", "virgola mobile", "divisione precisa", "bc calculator", "math float", "precisione", "decimal math"
+  echo "scale=2; 10 / 3" | bc
 
-[ Filtri Testo ]
-  KW: "contare righe file" 
+[ Filtri Testo (cut, wc, sort) ]
+  "contare righe file", "wc lines", "numero linee", "count lines", "quante righe", "file length", "size lines", "wc -l"
   RIGHE=$(wc -l < file.txt)
   
-  KW: "contare caratteri file" 
+  "contare caratteri file", "wc chars", "numero byte", "count bytes", "quanti caratteri", "file size chars", "byte count", "wc -c"
   CHAR=$(wc -c < file.txt)
   
-  KW: "tagliare colonne", "estrarre campo", "csv" 
-  cut -d ',' -f 1,3  (Campi 1 e 3 separati da virgola)
-  cut -b 1-3         (Primi 3 byte)
+  "tagliare colonne", "estrarre campo", "csv cut", "campo specifico", "cut field", "prendere colonna", "split columns", "parsa riga"
+  cut -d ',' -f 1,3
   
-  KW: "ordinare righe", "rimuovere duplicati" 
+  "ordinare righe", "rimuovere duplicati", "sort uniq", "lista unica", "ordine alfabetico", "mettere in ordine", "alfabetizzare", "organizzare lista"
   sort file.txt | uniq
-  sort -k 3 file.txt (Ordina per la 3^ parola)
   
-  KW: "rimuovere spazi", "escape caratteri speciali" 
-  sed 's/ //g' (Rimuove spazi)
-  sed 's/*/\\*/g' (Escape *)
-
-  KW: "estrarre righe in mezzo", "righe dalla 3 alla 5" 
-  #Esempio: Estrarre righe dalla 3 alla 5 (5 righe totali - prime 2)
+  "estrarre righe in mezzo", "righe dalla 3 alla 5", "range righe", "head tail combination", "slice file", "righe centrali", "prendere intervallo", "middle lines"
   head -n 5 file.txt | tail -n 3
 
-[ IFS ] - Separatori (CSV e Spazi)
-  KW: "leggere csv", "separatore campi", "gestire spazi nei nomi"
-  IFS=',' 
-  while read CAMPO1 CAMPO2; do ... done < file.csv
-
 ================================================================================
- SEZIONE V: CICLI, LOGICA E ARGOMENTI
+ SEZIONE V: LOGICA, CICLI E ARGOMENTI (ARRAYS & FLOW)
 ================================================================================
 
-[  IF, FOR, WHILE E PARAMETRI ]
+[ BOX DI RICERCA ]
 --------------------------------------------------------------------------------
-| "se il file esiste", "se è una directory", "se il file è leggibile"
-| "se la stringa è vuota", "se le stringhe sono uguali", "stringa non vuota"
-| "file più recente", "confronto date file"
-| "per ogni file nella cartella", "ripetere per tutti i file"
-| "elenca tutti i file escludendo directory corrente e superiore"
-| "finché la condizione è vera", "ciclo while", "fino alla fine del file"
-| "argomenti passati allo script", "numero di argomenti"
-| "tutti gli argomenti", "primo argomento"
-| "indice pari", "indice dispari", "argomento i-esimo", "espansione indiretta"
-| "exit status", "codice errore", "se il comando ha avuto successo"
+| "se il file esiste", "controllo esistenza file", "file exists", "if -e", "verifica file", "check presence", "esiste file", "is file present"
+| "se è una directory", "controllo cartella", "is directory", "if -d", "è cartella", "verifica dir", "check folder", "is dir"
+| "se la stringa è vuota", "stringa non vuota", "check empty string", "if -z", "if -n", "variabile vuota", "test stringa", "has content"
+| "se le stringhe sono uguali", "confronto stringhe", "string equality", "same string", "test uguaglianza", "match esatto", "stringhe identiche", "if equals"
+| "file più recente", "confronto date file", "newer file", "if -nt", "più nuovo di", "modificato dopo", "check time", "confronta timestamp"
+| "exit status", "se il comando ha avuto successo", "check success", "return code", "$?", "verifica errore", "codice uscita", "last command status"
+| "per ogni file nella cartella", "iterare files", "loop directory", "for all files", "for *", "scorrere cartella", "tutti i file", "ciclo for file"
+| "ciclo numerico", "contatore loop", "for i", "ripetere n volte", "iterazione numerica", "count loop", "da 1 a 10", "ciclo contato"
+| "finché la condizione è vera", "ciclo while", "loop condition", "while loop", "esegui finché", "loop condizionale", "ripeti se vero", "while true"
+| "numero di argomenti", "quanti argomenti", "count args", "argc", "$#", "numero parametri", "arg count", "quanti input"
+| "tutti gli argomenti", "lista argomenti", "all args", "$@", "elenco parametri", "tutti gli input", "arg array", "full args"
+| "indice pari", "argomento i-esimo", "espansione indiretta", "indirect expansion", "accedere per indice", "argomento specifico", "loop args by index", "parametro N"
+| "verificare numero argomenti esatto", "controllo conteggio args", "check num args", "argcount error", "serve esattamente N argomenti", "validate argc", "check params count", "numero input corretto"
+| "verificare se variabile è un numero", "controllo intero", "is number", "validate integer", "check digit", "è numerico", "test number", "solo cifre"
+| "massimo numero argomenti", "se argomenti > 9", "too many args", "limite argomenti", "controllare troppo input", "max args", "overflow argomenti", "troppi parametri"
 --------------------------------------------------------------------------------
 
 [ if ] - Condizioni
-  KW: "se il file esiste"
+  "se il file esiste", "controllo esistenza file", "file exists", "if -e", "verifica file", "check presence", "esiste file", "is file present"
   if [[ -e "$FILE" ]]; then ...
   
-  KW: "se è una directory"
+  "se è una directory", "controllo cartella", "is directory", "if -d", "è cartella", "verifica dir", "check folder", "is dir"
   if [[ -d "$FILE" ]]; then ...
   
-  KW: "se il file è leggibile"
-  if [[ -r "$FILE" ]]; then ...
+  "se la stringa è vuota", "stringa non vuota", "check empty string", "if -z", "if -n", "variabile vuota", "test stringa", "has content"
+  if [[ -z "$STR" ]]; then ... # Vuota
+  if [[ -n "$STR" ]]; then ... # Non vuota
   
-  KW: "se la stringa è vuota", "stringa non vuota"
-  if [[ -z "$STR" ]]; then ... (Vuota)
-  if [[ -n "$STR" ]]; then ... (Non vuota)
-  
-  # KW: "se le stringhe sono uguali"
+  "se le stringhe sono uguali", "confronto stringhe", "string equality", "same string", "test uguaglianza", "match esatto", "stringhe identiche", "if equals"
   if [[ "$A" == "$B" ]]; then ...
   
-  KW: "file più recente", "confronto date file" 
+  "file più recente", "confronto date file", "newer file", "if -nt", "più nuovo di", "modificato dopo", "check time", "confronta timestamp"
   if [[ "$F1" -nt "$F2" ]]; then ...
   
-  KW: "exit status", "se il comando ha avuto successo"
-  comando
+  "exit status", "se il comando ha avuto successo", "check success", "return code", "$?", "verifica errore", "codice uscita", "last command status"
   if (( $? == 0 )); then echo "Successo"; fi
 
 [ for / while ] - Cicli
-  KW: "per ogni file nella cartella", "elenca tutti i file escludendo directory corrente"
-  # (L'asterisco esclude automaticamente . e .. e i nascosti)
+  "per ogni file nella cartella", "iterare files", "loop directory", "for all files", "for *", "scorrere cartella", "tutti i file", "ciclo for file"
   for f in *; do echo "$f"; done
   
-  KW: "ciclo numerico"
+  "ciclo numerico", "contatore loop", "for i", "ripetere n volte", "iterazione numerica", "count loop", "da 1 a 10", "ciclo contato"
   for (( i=0; i<10; i++ )); do ... done
   
-  KW: "finché la condizione è vera"
+  "finché la condizione è vera", "ciclo while", "loop condition", "while loop", "esegui finché", "loop condizionale", "ripeti se vero", "while true"
   while (( X < 10 )); do ... done
 
-[ Argomenti ]
-  KW: "numero di argomenti"
+[ Argomenti & Validazione (Mini-Patterns) ]
+  "numero di argomenti", "quanti argomenti", "count args", "argc", "$#", "numero parametri", "arg count", "quanti input"
   echo $#
   
-  KW: "tutti gli argomenti"
+  "tutti gli argomenti", "lista argomenti", "all args", "$@", "elenco parametri", "tutti gli input", "arg array", "full args"
   echo $@
   
-  KW: "indice pari", "indice dispari", "argomento i-esimo" (Espansione Indiretta)
+  "indice pari", "argomento i-esimo", "espansione indiretta", "indirect expansion", "accedere per indice", "argomento specifico", "loop args by index", "parametro N"
   for (( i=1; i<=$#; i++ )); do
-      ARG=${!i}  # <--- MAGIA QUI
+      ARG=${!i}  
       if (( i % 2 == 0 )); then echo "Pari: $ARG"; fi
   done
 
+  "verificare numero argomenti esatto", "controllo conteggio args", "check num args", "argcount error", "serve esattamente N argomenti", "validate argc", "check params count", "numero input corretto"
+  if (( $# != 1 )); then echo "Serve 1 argomento"; exit 1; fi
+
+  "massimo numero argomenti", "se argomenti > 9", "too many args", "limite argomenti", "controllare troppo input", "max args", "overflow argomenti", "troppi parametri"
+  if (( $# > 9 )); then echo "Errore: Massimo 9 argomenti consentiti."; exit 1; fi
+
+  "verificare se variabile è un numero", "controllo intero", "is number", "validate integer", "check digit", "è numerico", "test number", "solo cifre"
+  if ! echo "$VAR" | grep -qE '^[0-9]+$'; then echo "Non numero"; exit 1; fi
+
 ================================================================================
- SEZIONE VI: PROCESSI, AMBIENTE E BACKGROUND
+ SEZIONE VI: PROCESSI, BACKGROUND & SEGNALI (TRAP)
 ================================================================================
 
-[ GESTIONE PROCESSI ]
+[ BOX DI RICERCA ]
 --------------------------------------------------------------------------------
-| "lanciare in background", "eseguire contemporaneamente"
-| "prendere il pid", "pid del figlio", "process id"
-| "aspettare la fine", "attendere processo", "wait"
-| "uccidere processo", "killare", "forzare chiusura"
-| "lanciare se stesso", "script ricorsivo"
-| "resistente alla chiusura", "nohup"
-| "visualizzare processi", "lista processi"
-| "variabili d'ambiente", "export", "rendere globale"
-| "debug", "vedere cosa fa lo script"
-| "intercettare ctrl+c", "eseguire comando alla chiusura", 
-| "pulizia file temporanei", "trap"
-| "uccidere tutti i processi con nome", "terminare script multipli", 
-|"killare con regex"
+| "lanciare in background", "eseguire contemporaneamente", "processo sfondo", "async run", "bg execution", "avviare nascosto", "parallelo", "job background"
+| "prendere il pid", "pid del figlio", "process id", "last pid", "$!", "id processo", "recuperare pid", "child pid"
+| "aspettare la fine", "attendere processo", "wait pid", "sincronizzazione", "wait all", "attendi completamento", "pausa finché finito", "sync process"
+| "uccidere processo", "killare", "forzare chiusura", "terminare", "kill -9", "arrestare", "stop process", "chiusura forzata"
+| "lanciare se stesso", "script ricorsivo", "chiamata ricorsiva", "figli multipli", "recursive script", "auto-chiamata", "albero processi", "nested script"
+| "resistente alla chiusura", "nohup", "keep alive", "no hang up", "sopravvivere exit", "background persistente", "ignore hup", "run forever"
+| "visualizzare processi", "lista processi", "ps aux", "check processes", "chi sta girando", "elenco task", "monitor processi", "ps list"
+| "uccidere tutti i processi con nome", "terminare script multipli", "killall", "chiudere per nome", "arresto di massa", "kill by name", "stop all", "terminare gruppo"
+| "intercettare ctrl+c", "eseguire comando alla chiusura", "pulizia file temporanei", "trap exit", "cleanup", "gestione segnali", "azione su exit", "trap sigint"
+| "ignorare segnale", "disabilitare ctrl+c", "trap ignore", "no interrupt", "non fermare", "block signal", "ignore term", "protected script"
+| "debug", "vedere cosa fa lo script", "trace execution", "set -x", "verbose mode", "debug mode", "tracciamento", "print commands"
+| "eseguire un comando e salvare risultato", "output in variabile", "command substitution", "catturare output", "var=$(cmd)", "salva risposta", "cmd result", "exec to var"
+| "passare i primi 7 file", "head", "tail", "output parziale", "primi N risultati", "passare output a script", "args from command", "limitare risultati"
 --------------------------------------------------------------------------------
 
 [ Gestione Processi ]
-  KW: "lanciare in background"
+  "lanciare in background", "eseguire contemporaneamente", "processo sfondo", "async run", "bg execution", "avviare nascosto", "parallelo", "job background"
   ./script.sh &
   
-  KW: "prendere il pid", "pid del figlio"
+  "prendere il pid", "pid del figlio", "process id", "last pid", "$!", "id processo", "recuperare pid", "child pid"
   PID=$!
   
-  KW: "aspettare la fine", "attendere processo"
-  wait $PID
-  wait      (Li aspetta tutti)
+  "aspettare la fine", "attendere processo", "wait pid", "sincronizzazione", "wait all", "attendi completamento", "pausa finché finito", "sync process"
+  wait $PID # Aspetta uno solo
+  wait      # Aspetta tutti
   
-  KW: "uccidere processo", "killare"
+  "uccidere processo", "killare", "forzare chiusura", "terminare", "kill -9", "arrestare", "stop process", "chiusura forzata"
   kill -9 $PID
   
-  KW: "resistente alla chiusura", "nohup"
+  "uccidere tutti i processi con nome", "terminare script multipli", "killall", "chiudere per nome", "arresto di massa", "kill by name", "stop all", "terminare gruppo"
+  killall nome_processo
+  
+  "resistente alla chiusura", "nohup", "keep alive", "no hang up", "sopravvivere exit", "background persistente", "ignore hup", "run forever"
   nohup ./script.sh &
   
-  KW: "lanciare se stesso", "script ricorsivo"
-  if (( $1 > 0 )); then
-      ./script.sh $(( $1 - 1 )) &
-  fi
+  "lanciare se stesso", "script ricorsivo", "chiamata ricorsiva", "figli multipli", "recursive script", "auto-chiamata", "albero processi", "nested script"
+  ./script.sh $(( $1 - 1 )) &
   
-  KW: "visualizzare processi"
+  "visualizzare processi", "lista processi", "ps aux", "check processes", "chi sta girando", "elenco task", "monitor processi", "ps list"
   ps aux
 
-[ Ambiente e Debug ]
-  KW: "variabili d'ambiente", "export"
-  export VAR="valore"
+[ Trap & Debug ]
+  "intercettare ctrl+c", "eseguire comando alla chiusura", "pulizia file temporanei", "trap exit", "cleanup", "gestione segnali", "azione su exit", "trap sigint"
+  TMPfile="temp_$$"
+  trap "rm -f $TMPfile; echo 'Pulito'" EXIT SIGINT
   
-  # KW: "debug", "vedere cosa fa lo script" (Non nel testo, ma salva la vita)
-  set -x (Stampa ogni comando prima di eseguirlo)
-  set +x (Disattiva debug)
-
-[ trap ] - Gestione Segnali (Pulizia all'uscita)
-  KW: "intercettare ctrl+c", "eseguire comando alla chiusura", "pulizia file temporanei"
-  # Esegue 'rm temp.txt' se lo script riceve SIGINT (CTRL+C) o SIGTERM
-  trap "rm -f temp.txt; echo 'Pulizia completata'; exit" SIGINT SIGTERM
-
-  KW: "ignorare segnale", "disabilitare ctrl+c"
+  "ignorare segnale", "disabilitare ctrl+c", "trap ignore", "no interrupt", "non fermare", "block signal", "ignore term", "protected script"
   trap "" SIGINT
+  
+  "debug", "vedere cosa fa lo script", "trace execution", "set -x", "verbose mode", "debug mode", "tracciamento", "print commands"
+  set -x
 
-  [ killall ] - Terminazione Multipla
-  KW: "uccidere tutti i processi con nome", "terminare script multipli"
-  killall nome_processo
-
-  KW: "uccidere con regex", "pattern processi"
-  # Termina tutti i processi che iniziano con "attendi" seguiti da maiuscola
-  killall -r "attendi[[:upper:]]*"
+[ Esecuzione e Output (Command Substitution) ]
+  "eseguire un comando e salvare risultato", "output in variabile", "command substitution", "catturare output", "var=$(cmd)", "salva risposta", "cmd result", "exec to var"
+  LISTA=$(ls *.txt)
+  
+  "passare i primi 7 file", "head", "tail", "output parziale", "primi N risultati", "passare output a script", "args from command", "limitare risultati"
+  FILES=$(ls -S1 /usr/include/*.h | head -n 7)
+  ./script.sh $FILES
+  
+  "ultimi N risultati", "coda dei risultati"
+  FILES=$(ls -t | tail -n 5)
 
 ================================================================================
- SEZIONE VII: RETE E PACCHETTI (EXTRA MA PRESENTI IN AAA.TXT)
+ SEZIONE VII: RETE E PACCHETTI
 ================================================================================
 
-[ WEB E INSTALLAZIONI ]
+[ BOX DI RICERCA ]
 --------------------------------------------------------------------------------
-| "scaricare sito", "download file", "wget"
-| "scaricare ricorsivamente", "tutto il sito"
-| "installare pacchetto", "rimuovere programma", "aggiornare lista"
+| "scaricare sito", "download file", "wget", "scaricare da url", "get file", "download http", "salvare pagina", "fetch url"
+| "scaricare ricorsivamente", "tutto il sito", "wget recursive", "mirror site", "scaricare intero dominio", "website copy", "backup sito", "wget all"
+| "installare pacchetto", "rimuovere programma", "aggiornare lista", "apt install", "pkg manager", "gestione software", "installazione ubuntu", "apt get"
 --------------------------------------------------------------------------------
 
-[ wget ] - Download
-  KW: "scaricare sito", "download file"
+  "scaricare sito", "download file", "wget", "scaricare da url", "get file", "download http", "salvare pagina", "fetch url"
   wget http://sito.com/file.zip
   
-  KW: "scaricare ricorsivamente", "tutto il sito"
+  "scaricare ricorsivamente", "tutto il sito", "wget recursive", "mirror site", "scaricare intero dominio", "website copy", "backup sito", "wget all"
   wget -r -l 2 -p -k -np URL
-  (r=ricorsivo, l=livello, p=prerequisiti, k=converti link, np=no parent)
-
-[ apt-get ] - Pacchetti
-  KW: "installare pacchetto" 
+  
+  "installare pacchetto", "rimuovere programma", "aggiornare lista", "apt install", "pkg manager", "gestione software", "installazione ubuntu", "apt get"
   sudo apt-get install nome
-  
-  KW: "rimuovere programma" 
   sudo apt-get purge nome
-  
-  KW: "aggiornare lista" 
   sudo apt-get update
 
 ================================================================================
- SEZIONE VIII: REGOLE ANTI-ERRORE (DA LEGGERE PRIMA DI CONSEGNARE)
+ SEZIONE VIII: SOLUZIONI ESAMI COMPLETATI (Esercizi Complessi)
 ================================================================================
 
-1. VARIABILI:
+[ BOX DI RICERCA ]
+--------------------------------------------------------------------------------
+| "analizza transiti", "parsing senza indici fissi", "cut delimiter", "conta allarmi", "trap child errors", "padre controlla figlio", "safe parsing", "cut vs substring", "transiti soluzioni"
+| "insuff2", "filtro voti", "studenti insufficienti", "join matricola", "filtrare risultati esame", "controllo voti", "insufficienze"
+| "separa", "split path", "dividere variabile ambiente", "tokenizzare stringa", "loop su delimitatore", "estrarre percorsi", "path parsing"
+| "backslash", "escape manuale", "aggiungere backslash", "escape metacaratteri", "loop caratteri", "modificare char per char", "sanitizzare stringa"
+| "cercadir", "find complesso", "cerca con condizioni multiple", "find directory permissions", "cerca cartelle leggibili", "filtro data e tipo"
+| "puntini", "stampa pid background", "loop infinito pid", "processo lungo", "stampa continua", "pid output"
+| "lanciaekilla", "gestione processi figli", "lanciare e terminare", "kill loop", "uccidere figli", "process manager", "controllo job"
+| "nAnB", "validare stringa AAABBB", "pattern matching", "conteggio caratteri", "validazione sequenza", "check pattern", "string validator", "format check"
+| "contaseparatamente", "pari e dispari su stderr", "separare output", "logica alternata", "filtro pari dispari", "gestione argomenti misti", "stderr split"
+| "cercarecente", "file più recente di tutti", "trovare ultimo modificato", "most recent file", "max date", "confronto timestamp loop", "newest file"
+| "ping pong", "sincronizzazione processi", "passaggio testimone", "aspettare file", "lock file", "busy waiting", "sync files", "process flag"
+| "raggruppa", "csv uniq", "contare occorrenze ordinata", "statistiche csv", "group by count", "frequenza dati", "histogram data"
+| "discendenti", "albero processi", "generare figli a catena", "process tree", "ricorsione wait", "recursive spawn", "padre figlio nipote"
+| "estrazione specifica", "caratteri in mezzo", "substring precisa", "meta stringhe", "middle chars", "estrai parte centrale"
+| "errori giudiziari", "join relazionale", "unire tre file", "lookup ID", "correlazione dati", "db join bash", "merge files by id"
+| "triplette", "cicli annidati", "combinazioni file", "tre for loops", "nested loops", "permutazioni", "files combo"
+| "somma quadrati", "calcolo argomenti", "operazioni su tutti i parametri", "math loop args", "sommatoria complessa", "calcolo input"
+| "invertire argomenti", "stampa inversa", "reverse args", "dall'ultimo al primo", "print backwards", "reverse loop"
+| "estrai", "parsing csv complesso", "rimuovere colonne e sommare", "csv cut and sum", "elaborazione file dati", "stringhe confinate"
+| "voti", "aggiornare voti", "merge esami", "voto più recente", "gestione esami", "update records", "sovrascrivere dati vecchi"
+| "scrivisustderr", "stampare su stderr", "estrarre prima parola", "pipe output stderr", "leggere righe e separare"
+| "rinomina loop", "rename math", "calcolo nomi file", "mv con calcolo", "invertire indici file", "batch rename advanced"
+| "lancia recursivo", "figlio lancia figlio", "recursive export", "variabili globali script", "catena processi"
+| "2di3", "estrarre carattere specifico", "controllare lunghezza parola", "secondo char terza parola", "filtro posizionale"
+| "asterischi", "contare righe con simbolo", "grep count symbol", "cercare asterisco nei file", "find exec grep"
+| "concatena", "estrarre righe range", "righe 2 3 4", "head tail loop", "leggere righe specifiche"
+| "stringhe confinate", "campi tra virgolette", "csv quotato", "terzo campo con spazi", "cut quote delimiter"
+--------------------------------------------------------------------------------
+
+[ ESAME: ANALIZZA TRANSITI & CONTA ALLARMI ]
+  # 1. Parsing SICURO (evito indici fissi)
+  # 2. Padre conta righe STDERR del figlio (ignora stdout)
+  
+  # analizza_transiti.sh
+  while read RIGA || [[ -n "$RIGA" ]]; do
+      # Uso CUT perché la lunghezza dei campi può variare (es. 9:00 vs 10:00)
+      # EVITO ${RIGA:19:3} che è pericoloso!
+      TARGA=$(echo "$RIGA" | cut -d ';' -f 3)
+      ORARIO=$(echo "$RIGA" | cut -d ';' -f 2)
+      
+      # Logica sospetto
+      if [[ "$TARGA" == *00* ]]; then
+          echo "Sospetto: $TARGA alle $ORARIO" 1>&2 # Su STDERR
+      else
+          echo "$TARGA OK" # Su STDOUT
+      fi
+  done < transiti.txt
+
+  # conta_allarmi.sh
+  # TRUCCO: ( cmd > /dev/null ) 2>&1 | wc -l
+  # Spiego: Parentesi per subshell. > /dev/null butta via le targhe OK. 
+  # 2>&1 redirige gli errori (Sospetti) su stdout per farli contare a wc.
+  NUM_ERRORI=$(( ./analizza_transiti.sh > /dev/null ) 2>&1 | wc -l)
+  echo "Trovati $NUM_ERRORI veicoli sospetti"
+
+[ ESAME: INSUFF2 ] - Filtro Voti e Join
+  # Cerca studenti con voto < 18 nel secondo esame MA che non hanno fatto il primo.
+  # Richiede `grep` inverso o controllo esistenza.
+  while read NOME COGNOME MATRICOLA VOTO; do
+      if (( VOTO < 18 )); then
+          # Controllo se matricola esiste nel file 1
+          EXISTS=$(grep -c "$MATRICOLA" Esame1.txt)
+          if (( EXISTS == 0 )); then
+              echo "$MATRICOLA $NOME $COGNOME $VOTO"
+          fi
+      fi
+  done < Esame2.txt | sort -k 3
+
+[ ESAME: SEPARA ] - Split PATH manuale
+  # Implementazione manuale dello split di una stringa con separatore ':'
+  RESIDUO=$PATH
+  while [[ -n "$RESIDUO" ]]; do
+      TESTA=${RESIDUO%%:*}      # Prendi tutto prima del primo :
+      echo "$TESTA ${#TESTA}"   # Stampa e Lunghezza
+      
+      # Aggiorna residuo
+      if [[ "$RESIDUO" == *:* ]]; then
+          RESIDUO=${RESIDUO#*:} # Togli la testa
+      else
+          RESIDUO="" # Finito
+      fi
+  done
+
+[ ESAME: BACKSLASH ] - Escape Manuale
+  # Aggiunge \ davanti a * ? [ ]
+  while read RIGA; do
+      OUT=""
+      LEN=${#RIGA}
+      for (( i=0; i<LEN; i++ )); do
+          C=${RIGA:$i:1}
+          if [[ "$C" == "*" || "$C" == "?" || "$C" == "[" ]]; then
+              OUT="${OUT}\\${C}"
+          else
+              OUT="${OUT}${C}"
+          fi
+      done
+      echo "$OUT"
+  done
+
+[ ESAME: 2DI3 ] - Estrazione Posizionale
+  # Input da file: "uno due tre quattro"
+  # Output: 2° carattere della 3° parola (se esiste e lunga > 1)
+  while read UNO DUE TRE QUATTRO; do
+      if [[ -n "$TRE" && ${#TRE} -ge 2 ]]; then
+          echo "${TRE:1:1}" # Indice 1 = 2° carattere
+      fi
+  done < /usr/include/stdio.h
+
+[ ESAME: SCRIVISUSTDERR ] - Estrazione e Redirezione
+  # Legge righe, estrae prima parola -> stderr. Scrive "evviva" -> stdout.
+  while read LINEA; do
+      PRIMA=${LINEA%% *}
+      echo "$PRIMA" 1>&2
+      echo "evviva"
+  done
+
+[ ESAME: RENAME LOOPS ] - Calcoli sui nomi file
+  # Rinomina 1.X in 2.(9-X)
+  for (( i=0; i<10; i++ )); do
+      NEW_I=$(( 9 - i ))
+      mv "1.$i" "2.$NEW_I"
+  done
+
+[ ESAME: LANCIA RECURSIVO ] - Variabili Globali
+  # lancia.sh: export VAR=1; ./figlio.sh
+  # figlio.sh: if VAR < 10; then VAR++; ./figlio.sh; fi
+  # lancia.sh
+  export INDICE=1
+  export MAX=10
+  ./figlio.sh
+  
+  # figlio.sh
+  echo "PID: $$"
+  if (( INDICE < MAX )); then
+     (( INDICE++ ))
+     ./figlio.sh
+  fi
+
+[ ESAME: ASTERISCHI ] - Grep Count
+  # Conta righe che contengono '*' nei file .h
+  # -h toglie il nome file dall'output di grep
+  find /usr/include -name "*.h" -exec grep -h '*' {} \; | wc -l
+
+[ ESAME: CONCATENA ] - Range Righe
+  # Stampa righe 2, 3, 4 di ogni file
+  for F in /usr/include/std*; do
+      # Metodo 1: head/tail
+      head -n 4 "$F" | tail -n 3 >> output.txt
+      
+      # Metodo 2: counter (più sicuro)
+      C=0
+      while read RIGA; do
+          ((C++))
+          if (( C >= 2 && C <= 4 )); then echo "$RIGA" >> output.txt; fi
+          if (( C > 4 )); then break; fi
+      done < "$F"
+  done
+
+[ ESAME: STRINGHE CONFINATE ] - CSV Quotato
+  # Estrae il 3° campo tra virgolette: "a" "b" "c d"
+  while read RIGA; do
+      # Cut usa " come delimitatore.
+      # Campo 1=vuoto (prima del 1° quote), Campo 2="a", Campo 3=spazio, ...
+      # La sequenza è: [pre]"[1]"[sep]"[2]"[sep]"[3]"
+      # Quindi il 3° valore quotato è tipicamente il campo 6 (o 5/7 dipendente dagli spazi)
+      # Se formato rigido: "1" "2" "3"
+      # cut -d '"' -> f2="1", f4="2", f6="3"
+      echo "$RIGA" | cut -d '"' -f 6
+  done
+
+[ ESAME: CERCADIR ] - Find Complesso
+  # Cerca directory leggibili modificate dopo stdio.h
+  for F in /usr/include/*; do
+      if [[ -d "$F" && -r "$F" && "$F" -nt /usr/include/stdio.h ]]; then
+          echo "$F"
+      fi
+  done
+
+[ ESAME: PUNTINI ] - Processi Background
+  # Stampa un puntino e il PID ogni secondo
+  while true; do
+      echo -n ". $$ "
+      sleep 1
+  done
+
+[ ESAME: LANCIAEKILLA ] - Gestione Figli
+  # Lancia 10 processi e poi li killa tutti
+  PIDS=""
+  for (( i=0; i<10; i++ )); do
+      ./puntini.sh &
+      PIDS="$PIDS $!"
+  done
+  sleep 10
+  kill -9 $PIDS
+
+[ ESAME: VOTI ] - Merge e Aggiornamento
+  # Prende l'ultimo voto valido tra due file
+  # Legge file 2 (più recente) e stampa sempre.
+  # Legge file 1, stampa SOLO SE non presente nel file 2.
+  cat esame2.txt
+  while read MAT VOTO; do
+      CHEK=$(grep "$MAT" esame2.txt)
+      if [[ -z "$CHEK" ]]; then
+          echo "$MAT $VOTO"
+      fi
+  done < esame1.txt
+
+[ ESAME: ESTRAI ] - Parsing Rigido
+  # Input: parola,123,parola
+  # Output: parola, parola (senza numero) + Somma numeri scartati
+  SOMMA=0
+  IFS=','
+  while read A NUM B; do
+      echo "$A, $B"
+      (( SOMMA += NUM ))
+  done < file.csv
+  echo "Somma scartata: $SOMMA"
+
+[ nAnB ] - Validazione Stringa
+  "nAnB", "validare stringa AAABBB", "pattern matching", "conteggio caratteri", "validazione sequenza"
+  # Logica: conta A, conta B, verifica se uguali
+  while (( i < LEN )); do ... done
+
+[ Contaseparatamente ] - I/O Misto
+  "contaseparatamente", "pari e dispari su stderr", "separare output", "logica alternata", "filtro pari dispari", "gestione argomenti misti", "stderr split"
+  # Pari su stdout, Dispari su stderr
+  for (( i=1; i<=$#; i++ )); do
+      ARG=${!i}
+      if (( i % 2 != 0 )); then echo "$ARG" 1>&2; else echo "$ARG"; fi
+  done
+
+[ Cerca Recente ] - Algoritmo Massimo
+  "cercarecente", "file più recente di tutti", "trovare ultimo modificato", "most recent file", "max date", "confronto timestamp loop", "newest file"
+  # Ciclo su tutti i file e tengo il 'maggiore' (più recente)
+  if [[ "$F" -nt "$RECENTE" ]]; then RECENTE=$F; fi
+
+[ Ping Pong ] - Sincronizzazione
+  "ping pong", "sincronizzazione processi", "passaggio testimone", "aspettare file", "lock file", "busy waiting", "sync files", "process flag"
+  while [[ -e "turno_altrui.txt" ]]; do sleep 1; done
+  touch "turno_altrui.txt"
+
+[ Raggruppa ] - Analisi Dati
+  "raggruppa", "csv uniq", "contare occorrenze ordinata", "statistiche csv", "group by count", "frequenza dati", "histogram data"
+  cut ... | sort | uniq -c
+
+[ Discendenti ] - Ricorsione Processi
+  "discendenti", "albero processi", "generare figli a catena", "process tree", "ricorsione wait", "recursive spawn", "padre figlio nipote"
+  if (( $1 > 0 )); then
+      ./discendenti.sh $(( $1 - 1 )) &
+      wait $!
+  fi
+
+[ Estrazione Specifica ] - Stringhe
+  "estrazione specifica", "caratteri in mezzo", "substring precisa", "meta stringhe", "middle chars", "estrai parte centrale"
+  echo "${VAR:OFFSET:LENGTH}"
+
+[ Errori Giudiziari ] - Join Relazionale (ID Lookup)
+  "errori giudiziari", "join relazionale", "unire tre file", "lookup ID", "correlazione dati", "db join bash", "merge files by id"
+  # Legge Verdetti, cerca Processo, cerca Denuncia
+  while read ID_PROC VERDETTO; do
+      ID_DENUNCIA=$(grep "$ID_PROC" processi.txt | awk '{print $1}')
+      INFO=$(grep "$ID_DENUNCIA" denunce.txt)
+      echo "$INFO $VERDETTO"
+  done < verdetti.txt
+
+[ Triplette ] - Cicli Annidati
+  "triplette", "cicli annidati", "combinazioni file", "tre for loops", "nested loops", "permutazioni", "files combo"
+  for A in *; do
+      for B in *; do
+          for C in *; do
+              echo "($A; $B; $C)"
+          done
+      done
+  done
+
+[ Somma Quadrati ] - Matematica su Argomenti
+  "somma quadrati", "calcolo argomenti", "operazioni su tutti i parametri", "math loop args", "sommatoria complessa", "calcolo input"
+  RIS=0
+  for (( i=1; i<=$#; i++ )); do
+      VAL=${!i}
+      (( RIS = RIS + VAL*VAL ))
+  done
+  echo $RIS
+
+[ Invertire Argomenti ] - Loop Inverso
+  "invertire argomenti", "stampa inversa", "reverse args", "dall'ultimo al primo", "print backwards", "reverse loop"
+  for (( i=$#; i>=1; i-- )); do
+      echo "${!i}"
+  done
+
+================================================================================
+ SEZIONE IX: REGOLE ANTI-ERRORE (DA LEGGERE PRIMA DI CONSEGNARE)
+================================================================================
+1. ANTI-TYPO:
+   Metti `set -u` all'inizio dello script. Se scrivi male una variabile (es. `STERR` invece di `STRERR`), lo script si ferma e ti avvisa invece di continuare con valore vuoto!
+
+2. VARIABILI:
    Non scrivere `VAR=comando`.
    Scrivi `VAR=$(comando)`. (Es. `RIGHE=$(wc -l < file.txt)`)
 
-2. SPAZI IF:
+3. SPAZI IF:
    Non scrivere `if [[$A==$B]]`.
    Scrivi `if [[ $A == $B ]]`. (Spazi ovunque!)
 
-3. FILE vs NUMERI:
+4. FILE vs NUMERI:
    File/Stringhe -> `[[ ... ]]`
    Numeri/Matematica -> `(( ... ))`
    
-4. VARIABILI VUOTE:
+5. VARIABILI VUOTE:
    `find` può ritornare vuoto. Controlla sempre: `if [[ -n "$VAR" ]]; then`
-   
-5. FIND vs FOR:
-   Se chiedono "directory corrente" -> USA `for f in *`
-   Se chiedono "tutto il sistema/sottocartelle" -> USA `find .`
-
-================================================================================
- SEZIONE IX: PATTERN ESAMI RISOLTI 
-================================================================================
-
-[ PATTERN ESAMI ]
---------------------------------------------------------------------------------
-| "nAnB", "validare stringa AAABBB"
-| "contaseparatamente", "pari e dispari su stderr"
-| "cercarecente", "file più recente di tutti"
-| "concatena", "estrarre righe specifiche", "exec fd"
-| "raggruppa", "csv uniq", "contare occorrenze"
-| "ping pong", "sincronizzazione processi", "passaggio testimone", "aspettare file"
---------------------------------------------------------------------------------
-
-[ nAnB ] - Validazione Stringa 
-  # KW: "validare stringa AAABBB"
-  while (( i < LEN )); do CAR=${STR:$i:1}; if [[ $CAR == "A" ]]; then ...; done
-
-[ Contaseparatamente ] - Pari/Dispari 
-  # KW: "pari e dispari su stderr"
-  for (( i=1; i<=$#; i++ )); do
-      FILE=${!i}
-      if (( i % 2 != 0 )); then echo "Dispari" 1>&2; fi
-  done
-
-[ Cerca Recente ] - Date 
-  # KW: "file più recente di tutti"
-  RECENTE=""; FILES=$(find . -name "*.h")
-  for F in $FILES; do
-      if [[ -z "$RECENTE" || "$F" -nt "$RECENTE" ]]; then RECENTE=$F; fi
-  done
-
-[ Concatena ] - Exec 
-  # KW: "estrarre righe specifiche", "exec fd"
-  exec {FD}< file.txt
-  while read -u $FD RIGA; do ... done
-  exec {FD}>&-
-  
-[ Raggruppa ] - CSV Uniq 
-  # KW: "contare occorrenze", "csv uniq"
-  while read ...; do
-     NUM=$(grep -c "motivo" file.txt)
-  done | sort | uniq
-
-[ Ping Pong ] - Sincronizzazione File 
-  # KW: "passaggio testimone", "aspettare che l'altro finisca"
-  # Esempio: Processo A aspetta che B cancelli 'turno_A.txt' e crei 'turno_B.txt'
-
-while true; do
-    # 1. Attesa attiva (Busy Waiting) finché non tocca a me
-    # Verifica esistenza file dell'altro processo (es. pong.txt)
-    while [[ -e "turno_B.txt" ]]; do
-        sleep 2  # Richiesto attesa 2 secondi
-    done
-    
-    # 2. Sezione Critica / Azione
-    echo "Tocca a me (Ping)!"
-    
-    # 3. Passaggio testimone
-    touch "turno_B.txt" # Creo il file per l'altro
-    rm "turno_A.txt"    # Rimuovo il mio se necessario
-done
