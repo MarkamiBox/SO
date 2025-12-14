@@ -442,6 +442,9 @@ ISTRUZIONI:
   "verificare se variabile è un numero", "controllo intero", "is number", "validate integer", "check digit", "è numerico", "test number", "solo cifre"
   if ! echo "$VAR" | grep -qE '^[0-9]+$'; then echo "Non numero"; exit 1; fi
 
+  "verificare se argomento è directory", "controllo directory esistente", "check dir exists", "validate dir", "is directory input", "solo cartelle", "test directory"
+  if [[ ! -d "$1" ]]; then echo "Errore: $1 non è una directory"; exit 1; fi
+
 ================================================================================
  SEZIONE VI: PROCESSI, BACKGROUND & SEGNALI (TRAP)
 ================================================================================
@@ -566,6 +569,8 @@ ISTRUZIONI:
 | "asterischi", "contare righe con simbolo", "grep count symbol", "cercare asterisco nei file", "find exec grep"
 | "concatena", "estrarre righe range", "righe 2 3 4", "head tail loop", "leggere righe specifiche"
 | "stringhe confinate", "campi tra virgolette", "csv quotato", "terzo campo con spazi", "cut quote delimiter"
+| "word check", "esame classifica", "conta parole", "classifica file", "redirigere output", "stderr vs stdout", "wc -w", "contare parole", "redirect risultati", "gestione log"
+| "sorvegliante", "trap correct position", "analizza processi", "csv cpu monitoring", "trap cleanup", "file temporanei", "gestione segnali", "allarme cpu"
 --------------------------------------------------------------------------------
 
 [ ESAME: ANALIZZA TRANSITI & CONTA ALLARMI ]
@@ -828,6 +833,81 @@ ISTRUZIONI:
   for (( i=$#; i>=1; i-- )); do
       echo "${!i}"
   done
+
+[ ESAME: WORD CHECK ] - Classificazione File e Redirezioni
+  "word check", "esame classifica", "conta parole", "classifica file", "redirigere output", "stderr vs stdout", "wc -w", "contare parole", "redirect risultati", "gestione log"
+  "esame 205", "esercizio word check", "classifica.sh", "lancia_esame.sh", "word count script", "condizione parole", "file validi", "redirect log"
+
+  # Preparazione:
+  # mkdir -p esame_205; echo "uno due tre" > esame_205/corto1.txt; echo "uno" > esame_205/corto2.txt
+  # echo "parola " > esame_205/vuoto.txt; echo "uno due tre quattro cinque sei sette otto nove dieci undici" > esame_205/lungo1.txt
+  # echo "a b c d e f g h i l m n o p q r" > esame_205/lungo2.txt
+
+  # classifica.sh
+  # NOTA: Uso for con GLOB (*.txt) per evitare problemi con spazi nel nome (find $1 è pericoloso) o ricorsività indesiderata.
+  DIR="$1"
+  if [[ ! -d "$DIR" ]]; then echo "Non è una directory" 1>&2; exit 1; fi
+  
+  # Itero sui file txt nella directory (non ricorsivo)
+  # basename "$FILE" serve perché il glob restituisce il path (es. esame_205/file.txt)
+  for FILE in "$DIR"/*.txt; do
+      if [[ -f "$FILE" ]]; then # Controllo sicurezza se glob non trova nulla
+          # wc -w < "$FILE" evita di stampare il nome file nell'output di wc
+          COUNT=$(wc -w < "$FILE") 
+          
+          if (( COUNT < 5 )); then
+              # Meno di 5 parole -> STDERR (solo nome file)
+              echo "$(basename "$FILE")" 1>&2
+          else
+              # 5 o più parole -> STDOUT (formato FILE: ... - PAROLE: ...)
+              echo "FILE: $(basename "$FILE") - PAROLE: $COUNT"
+          fi
+      fi
+  done
+
+  # lancia_esame.sh
+  # NOTA: Redirezione standard output su file, stderr lasciato a video.
+  OUT_FILE="risultati.log"
+  
+  # Esecuzione: stdout -> risultati.log, stderr -> rimane a video (implicito)
+  ./classifica.sh esame_205 > "$OUT_FILE"
+
+  # Conteggio righe del file risultati
+  VALIDI=$(wc -l < "$OUT_FILE")
+  echo "Analisi completata. I file validi salvati sono: $VALIDI"
+
+[ ESAME: SORVEGLIANTE ] - Trap e CSV Parsing
+  "sorvegliante", "trap correct position", "analizza processi", "csv cpu monitoring", "trap cleanup", "file temporanei", "gestione segnali", "allarme cpu"
+  "esame trap", "monitoraggio cpu", "csv if", "trap inizio script", "pulizia temp", "sorveglianza processi"
+
+  # sorvegliante.sh (CORRETTO)
+  # ERRORE COMUNE: Mettere il trap alla fine. VA MESSO SUBITO!
+  # Se premi CTRL+C durante l'esecuzione, il trap deve essere già attivo.
+  
+  FILE="temp_dati.txt"
+  # ATTIVO TRAP SUBITO
+  trap "rm -f $FILE; echo 'Pulizia completata'" EXIT SIGINT
+  
+  # Ora eseguo il lavoro pesante
+  ./analizza.sh "$1" processi.csv > "$FILE"
+  
+  echo "Processi normali registrati: $(wc -l < "$FILE")"
+  
+  # analizza.sh
+  # Parsing CSV con IFS e redirezione STDERR se CPU > 50
+  if (( $# != 2 )); then echo "Serve UTENTE e FILE"; exit 1; fi
+  
+  IFS=","
+  while read PID UTENTE CPU MEMORIA; do
+     if [[ "$UTENTE" == "$1" ]]; then
+         # Matematica sui numeri (CPU)
+         if (( CPU > 50 )); then
+             echo "ALLARME PID: $PID  CPU: $CPU" 1>&2
+         else
+             echo "PID: $PID"
+         fi
+     fi
+  done < "$2"
 
 ================================================================================
  SEZIONE IX: REGOLE ANTI-ERRORE (DA LEGGERE PRIMA DI CONSEGNARE)
