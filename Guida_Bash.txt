@@ -299,6 +299,8 @@ ISTRUZIONI:
 | "tagliare colonne", "estrarre campo", "csv cut", "campo specifico", "cut field", "prendere colonna", "split columns", "parsa riga"
 | "ordinare righe", "rimuovere duplicati", "sort uniq", "lista unica", "ordine alfabetico", "mettere in ordine", "alfabetizzare", "organizzare lista"
 | "estrarre righe in mezzo", "righe dalla 3 alla 5", "range righe", "head tail combination", "slice file", "righe centrali", "prendere intervallo", "middle lines"
+| "sostituire caratteri", "cambiare spazi in accapo", "tr replace", "spezzare parole", "one word per line", "split words", "tokenizzare", "tr newlines"
+| "regex match", "espressione regolare", "validare formato", "controllo pattern complesso", "if regex", "match targa", "validazione stringa", "regex bash"
 --------------------------------------------------------------------------------
 
 [ ${...} ] - Manipolazione Stringhe
@@ -351,7 +353,7 @@ ISTRUZIONI:
   "calcoli con la virgola", "numeri decimali", "virgola mobile", "divisione precisa", "bc calculator", "math float", "precisione", "decimal math"
   echo "scale=2; 10 / 3" | bc
 
-[ Filtri Testo (cut, wc, sort) ]
+[ Filtri Testo (cut, wc, sort, tr, regex) ]
   "contare righe file", "wc lines", "numero linee", "count lines", "quante righe", "file length", "size lines", "wc -l"
   RIGHE=$(wc -l < file.txt)
   
@@ -366,6 +368,12 @@ ISTRUZIONI:
   
   "estrarre righe in mezzo", "righe dalla 3 alla 5", "range righe", "head tail combination", "slice file", "righe centrali", "prendere intervallo", "middle lines"
   head -n 5 file.txt | tail -n 3
+
+  "sostituire caratteri", "cambiare spazi in accapo", "tr replace", "spezzare parole", "one word per line", "split words", "tokenizzare"
+  echo "ciao mondo" | tr ' ' '\n'
+  
+  "regex match", "espressione regolare", "validare formato", "controllo pattern complesso", "if regex", "match targa", "validazione stringa"
+  if [[ "$STR" =~ ^[A-Z]{2}[0-9]{3}[A-Z]{2}$ ]]; then echo "Targa OK"; fi
 
 ================================================================================
  SEZIONE V: LOGICA, CICLI E ARGOMENTI (ARRAYS & FLOW)
@@ -909,8 +917,482 @@ ISTRUZIONI:
      fi
   done < "$2"
 
+
+[ ESAME: DIVANI ] - Filtro Numerico
+  "divani", "filtro dimensioni", "larghezza altezza", "trova mobili", "filtro numerico doppio", "controllare due variabili", "if width height", "divani esame"
+  "divani212", "divani.sh", "filtro misure", "condizione and", "maggiore uguale", "minore uguale"
+
+  # SCRIPT: divani.sh (Arg1=MinLarg, Arg2=MaxAlt)
+  # ./divani.sh 200 80
+  
+  if (( $# != 2 )); then echo "Servono 2 argomenti"; exit 1; fi
+  MIN_W=$1
+  MAX_H=$2
+  
+  # Legge: NOME LARGHEZZA ALTEZZA PROFONDITA
+  while read NOME LARG ALT PROF; do
+      # Controllo: Larg >= ARG1 AND Alt <= ARG2
+      if (( LARG >= MIN_W && ALT <= MAX_H )); then
+          echo "$NOME $LARG $ALT $PROF"
+      fi
+  done < divani.txt
+
+[ ESAME: CONTAMULTE ] - Conteggio e uniq
+  "contamulte", "contare multe", "frequenza multe", "uniq count", "sort uniq", "statistica multe", "multe uguali"
+  "esame 59", "contamulte.sh", "quante volte la stessa multa", "raggruppare valori", "swap colonne uniq"
+
+  # SCRIPT: contamulte.sh
+  # Eseguito con: ./contamulte.sh < multe.txt
+  
+  # Il file è già ORDINATO per multa (dice il testo).
+  # Formato: Nome Cognome Multa Data
+  # Noi dobbiamo contare la frequenza della MULTA.
+  
+  while read N C MULTA DATA; do
+      echo "$MULTA"
+  done | uniq -c | while read COUNT VALORE; do
+      # uniq -c stampa: "   2 57" (Count Valore)
+      # Il testo chiede: "57 2" (Valore Count)
+      echo "$VALORE $COUNT"
+  done
+
+[ ESAME: SELEZMATRICOLA ] - Grep Context (-B)
+  "selezmatricola", "grep context", "riga precedente", "grep -B", "estrarre matricola", "esame 210", "filtro multilinea", "grep before"
+  "selezionare matricola", "lista esami", "trova chi fa l'esame", "grep inverso"
+
+  # SCRIPT: selezmatricola.sh
+  # Input formato strano: Data / Matricola / Esame.
+  # Bisogna trovare "SISTEMI OPERATIVI" e prendere la matricola nella riga PRIMA.
+  
+  # 1. grep -B 1 "SISTEMI OPERATIVI": Prende la riga dell'esame E quella prima (Matricola).
+  # 2. --no-group-separator: Evita che grep metta "--" tra i gruppi di output.
+  # 3. grep -v "SISTEMI": Butta via la riga con il nome dell'esame, tenendo solo quella della matricola.
+  # 4. cut -d ' ' -f 1: Prende il primo campo (la matricola, ignorando Nome Cognome).
+  
+  grep -B 1 --no-group-separator "SISTEMI OPERATIVI" lista.txt | \
+      grep -v "SISTEMI OPERATIVI" | \
+      cut -d ' ' -f 1
+
+[ ESAME: CONTARIPETIZIONICAR ] - String Char Loop
+  "contaripetizionicar", "conta caratteri stringa", "loops string", "frequenza lettere", "esame alfa", "carattere per carattere"
+  "split string chars", "sort caratteri", "occorrenze lettere"
+
+  # SCRIPT: contaripetizionicar.sh STRINGA
+  # Output richiesto: Count Carattere (es. 2 c)
+  
+  STR=$1
+  LEN=${#STR}
+  for (( i=0; i<LEN; i++ )); do
+      echo "${STR:$i:1}"
+  done | sort | uniq -c
+
+[ ESAME: CONTARIPETIZIONICAR 2 ] - String Char Loop (Swap Output)
+  "contaripetizionicar2", "conta caratteri stringa 2", "esame omega", "output invertito", "carattere count", "swap output uniq"
+  
+  # SCRIPT: contaripetizionicar2.sh STRINGA
+  # Output richiesto: Carattere Count (es. c 2)
+  # Rispetto a prima, dobbiamo invertire l'output di uniq -c
+  
+  STR=$1
+  LEN=${#STR}
+  for (( i=0; i<LEN; i++ )); do
+      echo "${STR:$i:1}"
+  done | sort | uniq -c | while read NUM CHAR; do
+      echo "$CHAR $NUM"
+  done
+
 ================================================================================
- SEZIONE IX: REGOLE ANTI-ERRORE (DA LEGGERE PRIMA DI CONSEGNARE)
+ SEZIONE X: ESERCIZI EXTRA (LISTA VELOCE)
+================================================================================
+
+[ BOX DI RICERCA ]
+--------------------------------------------------------------------------------
+| "magazzino", "filtro scorte", "logica and", "doppio controllo if", "prodotto quantità prezzo"
+| "atleti", "filtro atleti", "categoria e tempo", "minore di 100", "gara", "pettorale"
+| "filtra log", "livello errore", "controllo stringa log", "error critical", "grep log", "if or"
+| "utenti attivi", "durata sessione", "filtro minuti", "maggiore di 60", "monitoraggio user"
+| "estrai domini", "email domain", "tutto dopo la chiocciola", "parsing email", "rimuovere user"
+| "conta voti", "statistica voti", "frequenza voto", "studenti per voto", "uniq count voti"
+| "totale vendite", "somma prezzi", "accumulatore somma", "calcolo totale file", "sum loop"
+| "frequenza parole", "conteggio parole testo", "word counting", "tr split spaces", "most frequent words"
+| "conta estensioni", "conteggio per tipo", "file statistiche", "txt sh c", "loop extension check"
+| "statistiche accessi", "accessi per utente", "conteggio login", "frequenza user", "raggruppamento accessi"
+| "split args", "argomenti pari dispari", "separare input", "modulo 2", "redirect to files"
+| "filtra errori", "input differenziato", "redirect stderr carattere", "controllo primo char", "hash vs esclamativo"
+| "lancia esame", "wrapper script", "redirect stdout stderr file", "gestione log separati", "lancia e processa"
+| "somma o prodotto", "switch case", "operazione su argomenti", "calcolatrice bash", "if string op"
+| "argomenti inversi", "stampare al contrario", "loop decrementale", "ultimo primo", "reverse args"
+| "valida targa", "regex targa", "controllo formato", "lettere numeri", "espressione regolare bash"
+| "conta caratteri speciale", "conta vocali cifre", "grep count chars", "statistiche stringa", "vocali numeri"
+| "fibonacci ricorsivo", "funzione ricorsiva", "calcolo fibonacci", "recursion bash", "somma precedenti"
+| "inverti file ricorsivo", "lettura al contrario", "stampa ricorsiva", "reverse file content"
+| "piramide stringa", "substring loop", "stampa incrementale", "triangolo di lettere", "substring for"
+| "inverti file no ricorsione", "reverse array", "array loop backwards", "stampa inversa array", "tac manuale"
+--------------------------------------------------------------------------------
+
+[ Categoria A: Parsing e Filtri ]
+  # 1. MAGAZZINO (Quantità >= $1 AND Prezzo <= $2)
+  # NOTA: (( ... )) gestisce SOLO INTERI. Se i prezzi hanno virgola, serve 'bc'.
+  # Qui assumiamo numeri interi per semplicità didattica.
+  while read COD QTA PREZZO SCAFF; do
+      if (( QTA >= $1 && PREZZO <= $2 )); then echo "$COD $SCAFF"; fi
+  done < scorte.txt
+
+  # 2. ATLETI (Categoria == $1 AND Tempo < 100)
+  while read PET NOME COGN TEMPO CAT; do
+      if [[ "$CAT" == "$1" ]] && (( TEMPO < 100 )); then echo "$NOME $TEMPO"; fi
+  done < gara.txt
+
+  # 3. FILTRA LOG (Livello == ERROR OR CRITICAL)
+  while read DATA LIV MSG; do
+      if [[ "$LIV" == "ERROR" || "$LIV" == "CRITICAL" ]]; then echo "$DATA $LIV $MSG"; fi
+  done < server.log
+
+  # 4. UTENTI ATTIVI (Durata > 60)
+  while read USER ORARIO DURATA; do
+      if (( DURATA > 60 )); then echo "Utente: $USER - Tempo: $DURATA"; fi
+  done < accessi.txt
+
+  # 5. ESTRAI DOMINI (Stringa dopo @)
+  while read EMAIL; do
+      echo "${EMAIL##*@}"
+  done < email.txt
+
+[ Categoria B: Conteggio e Aggregazione ]
+  # 6. CONTA VOTI (Voto unico e conteggio)
+  # Assumo formato: MAT ID VOTO
+  cut -d ' ' -f 3 voti.txt | sort | uniq -c | awk '{print $2, $1}' # Voto Count
+
+  # 7. TOTALE VENDITE (Somma colonna Prezzo)
+  TOT=0
+  while read OGGETTO PREZZO; do (( TOT += PREZZO )); done < vendite.txt
+  echo $TOT
+
+  # 8. FREQUENZA PAROLE (tr per spezzare, sort, uniq -c, sort -nr per frequenza)
+  cat "$1" | tr ' ' '\n' | sort | uniq -c | sort -nr
+
+  # 9. CONTA ESTENSIONI (Loop sui file)
+  TXT=0; SH=0; C=0
+  for F in *; do
+      if [[ "$F" == *.txt ]]; then (( TXT++ )); fi
+      if [[ "$F" == *.sh ]]; then (( SH++ )); fi
+      if [[ "$F" == *.c ]]; then (( C++ )); fi
+  done
+  echo "TXT: $TXT, SH: $SH, C: $C"
+
+  # 10. STATISTICHE ACCESSI (Username Count)
+  cut -d ' ' -f 1 accessi.txt | sort | uniq -c
+
+[ Categoria C: Argomenti e Redirezione ]
+  # 11. SPLIT ARGS (Pari e Dispari)
+  > pari.txt; > dispari.txt
+  for (( i=1; i<=$#; i++ )); do
+      if (( i % 2 == 0 )); then echo "${!i}" >> pari.txt
+      else echo "${!i}" >> dispari.txt; fi
+  done
+
+  # 12. FILTRA ERRORI (Inizia con # o !)
+  while read RIGA; do
+      if [[ "${RIGA:0:1}" == "#" ]]; then echo "$RIGA"       # StdOut
+      elif [[ "${RIGA:0:1}" == "!" ]]; then echo "$RIGA" 1>&2 # StdErr
+      fi
+  done < input_data.txt
+
+  # 13. LANCIA ESAME (Wrapper)
+  ./processa.sh > log.out 2> errors.log
+  echo "Esecuzione terminata"
+
+  # 14. SOMMA O PRODOTTO (Argomenti)
+  OP=$1; N1=$2; N2=$3
+  case "$OP" in
+      "somma") echo $(( N1 + N2 )) ;;
+      "mult")  echo $(( N1 * N2 )) ;;
+      *)       echo "Errore" 1>&2 ;;
+  esac
+
+  # 15. ARGOMENTI INVERSI
+  for (( i=$#; i>=1; i-- )); do echo "${!i}"; done
+
+[ Categoria D: Stringhe e Ricorsione ]
+  # 16. VALIDA TARGA (Regex: 2Lett 3Num 2Lett)
+  if [[ "$1" =~ ^[A-Z]{2}[0-9]{3}[A-Z]{2}$ ]]; then echo "Targa Valida"
+  else echo "Non Valida"; fi
+
+  # 17. CONTA V/C (Vocali e Cifre)
+  # grep -o . (stampa 1 char per riga)
+  VOC=$(echo "$1" | grep -io "[aeiou]" | wc -l)
+  NUM=$(echo "$1" | grep -o "[0-9]" | wc -l)
+  echo "Vocali: $VOC, Cifre: $NUM"
+
+  # 18. FIBONACCI RICORSIVO
+  fib() {
+      if (( $1 <= 1 )); then echo $1
+      else
+          echo $(( $(fib $(($1-1))) + $(fib $(($1-2))) ))
+      fi
+  }
+  fib $1
+
+  # 19. INVERTI FILE RICORSIVO
+  inverti() {
+      local RIGA
+      read RIGA || return
+      inverti
+      echo "$RIGA"
+  }
+  inverti < "$1"
+
+  # 20. PIRAMIDE STRINGA (Sottostringhe)
+  STR=$1; LEN=${#STR}
+  for (( i=1; i<=LEN; i++ )); do
+      echo "${STR:0:i}"
+  done
+
+  # 21. INVERTI FILE NO RICORSIONE (Array)
+  # Leggiamo tutto in un array e stampiamo al contrario
+
+  if (( $# != 1 )) ; then echo "serve un argomento"; exit 1; fi
+  if [[ ! -e $1 ]] ; then echo "il file $1 non esiste"; exit 1; fi
+
+  i=0
+  while read RIGA; do
+      A[$i]=$RIGA
+      (( i++ ))
+  done < "$1"
+  
+  for (( j=i-1; j>=0; j-- )); do
+      echo "${A[j]}"
+  done
+
+
+================================================================================
+ SEZIONE XI: PATTERN AVANZATI (MATRICI, DATE, FLAG, RICORSIONE PURA)
+================================================================================
+
+[ BOX DI RICERCA ]
+--------------------------------------------------------------------------------
+| "somma righe colonne", "matrice bash", "calcolo griglia", "array bidimensionale simulato", "trasposta"
+| "array associativi", "dizionario bash", "mappa chiave valore", "contare stringhe", "hash map"
+| "parsing flag", "getopts", "argomenti opzionali", "gestione opzioni -v -f", "switch argomenti"
+| "rinomina sicura", "file collision", "incrementare nome file", "salvare senza sovrascrivere", "backup numerato"
+| "palindroma", "stringa inversa", "reverse string check", "controllo speculare", "leggere al contrario"
+| "calcolo date", "differenza giorni", "timestamp", "tempo trascorso", "date epoch", "file vecchio di tot"
+| "ping sweep", "controllo rete", "verifica host attivi", "network check", "loop ip address"
+| "confronto file", "righe mancanti", "diff manuale", "grep -v -f", "trova differenze", "righe uniche"
+| "tree walk", "visita ricorsiva directory", "scandire cartelle manuale", "ls ricorsivo function", "file walker"
+| "conversione binaria", "decimale a binario", "esadecimale", "bc base conversion", "math base"
+| "ping pong avanzato", "token file", "alternanza processi", "scambio messaggi file", "sincronizzazione processi txt"
+| "copia ricorsiva filtro", "find exec cp", "copiare non vuoti", "backup filtrato", "find not empty"
+| "somma righe pari dispari", "indici pari dispari", "somma alternata", "modulo righe", "line index math"
+| "estrazione csv", "colonna csv", "cut indice", "csv field extract", "tabella csv"
+--------------------------------------------------------------------------------
+
+[ 22. MATRICI E GRIGLIE ] - Somma Righe/Colonne
+  # Scenari: "Datia una matrice in file, somma righe e colonne"
+  # Input: 1 2 3
+  #        4 5 6
+  
+  declare -a COL_SUM # Array per le somme delle colonne
+  ROW_I=0
+  
+  # read -a legge una riga intera in un array (COLS[0], COLS[1]...)
+  while read -a COLS; do
+      ROW_SUM=0
+      for (( i=0; i<${#COLS[@]}; i++ )); do
+          (( ROW_SUM += COLS[i] ))        # Somma riga corrente
+          (( COL_SUM[i] += COLS[i] ))     # Somma colonna i-esima
+      done
+      echo "Somma Riga $ROW_I: $ROW_SUM"
+      (( ROW_I++ ))
+  done < matrice.txt
+  
+  # Stampa somme colonne
+  for (( i=0; i<${#COL_SUM[@]}; i++ )); do
+       echo "Somma Colonna $i: ${COL_SUM[i]}"
+  done
+
+[ 23. ARRAY ASSOCIATIVI ] - Conteggio (Hash Map)
+  # Scenari: "Contare occorrenze SENZA usare sort/uniq" o associare Chiave -> Valore
+  
+  declare -A MAPPA
+  while read PAROLA; do
+      (( MAPPA[$PAROLA]++ ))
+  done < parole.txt
+  
+  for K in "${!MAPPA[@]}"; do
+      echo "Parola: $K - Conteggio: ${MAPPA[$K]}"
+  done
+
+[ 24. PARSING FLAG (getopts) ] - Argomenti Avanzati
+  # Scenari: "Lo script accetta -f FILE (obbligatorio) e -v (opzionale)"
+  # Uso: ./script.sh -f dati.txt -v
+  
+  while getopts "f:v" OPT; do
+    case $OPT in
+      f) FILE_INPUT="$OPTARG" ;;   # -f ha un argomento (:)
+      v) VERBOSE=1 ;;              # -v è un flag booleano
+      *) echo "Opzione non valida"; exit 1 ;;
+    esac
+  done
+  
+  # Shift degli argomenti parsati per lasciare quelli posizionali (se ce ne sono)
+  shift $((OPTIND - 1))
+
+[ 25. RINOMINA SICURA ] - Evitare Sovrascrittura
+  # Scenari: "Salva il file, ma se esiste già chiamalo file_1, file_2..."
+  
+  NOME="report.txt"
+  BASE="report"
+  EXT=".txt"
+  CNT=1
+  
+  while [[ -e "$NOME" ]]; do
+      NOME="${BASE}_${CNT}${EXT}"
+      (( CNT++ ))
+  done
+  touch "$NOME" # Ora è sicuro usa questo nome
+  echo "Salvato come: $NOME"
+
+[ 26. PALINDROMA ] - Reverse String
+  # Scenari: "Controlla se la parola è palindroma (es. ANNA)"
+  
+  STR="$1"
+  LEN=${#STR}
+  REV=""
+  
+  for (( i=LEN-1; i>=0; i-- )); do
+      REV="${REV}${STR:$i:1}"
+  done
+  
+  if [[ "$STR" == "$REV" ]]; then echo "Palindroma"; else echo "Non Palindroma"; fi
+
+[ 27. CALCOLO DATE ] - Timestamp
+  # Scenari: "File modificato più di 24 ore fa?"
+  
+  NOW=$(date +%s)
+  FILE_TIME=$(date -r "file.txt" +%s)
+  DIFF=$(( NOW - FILE_TIME )) # Secondi passati
+  
+  if (( DIFF > 86400 )); then # 86400 = 1 giorno
+      echo "Il file è vecchio (> 24h)"
+  fi
+
+[ 28. PING SWEEP ] - Check Rete
+  # Scenari: "Controlla quali IP sono attivi nella subnet"
+  
+  SUBNET="192.168.1"
+  for i in {1..254}; do
+      # -c 1 (un pacchetto), -W 1 (timeout 1 sec)
+      if ping -c 1 -W 1 "$SUBNET.$i" &> /dev/null; then
+          echo "Host $SUBNET.$i UP"
+      fi
+  done
+
+[ 29. CONFRONTO FILE ] - Diff Manuale
+  # Scenari: "Stampa le righe presenti in A ma NON in B"
+  
+  # Metodo grep (veloce):
+  # -F (stringhe fisse), -v (inverti), -f (pattern da file)
+  grep -F -v -f file_B.txt file_A.txt
+  
+  # Alternativa while (didattica):
+  while read RIGA; do
+      if ! grep -q -F "$RIGA" file_B.txt; then
+          echo "$RIGA (Manca in B)"
+      fi
+  done < file_A.txt
+
+[ 30. TREE WALK ] - Visita Ricorsiva Manuale
+  # Scenari: "Scorri le cartelle senza find"
+  
+  walk() {
+      local DIR="$1"
+      # Globbing sicuro: "$DIR"/*
+      for FILE in "$DIR"/*; do
+          if [[ -d "$FILE" ]]; then
+              echo "Dir: $FILE"
+              walk "$FILE"  # Ricorsione
+          elif [[ -f "$FILE" ]]; then
+              echo "File: $FILE"
+          fi
+      done
+  }
+  walk "."
+
+[ 31. BINARIO/HEX ] - Conversione Base
+  # Scenari: "Converti decimale in binario"
+  
+  NUM=$1
+  # obase=Output, ibase=Input (default 10)
+  BIN=$(echo "obase=2; $NUM" | bc)
+  HEX=$(echo "obase=16; $NUM" | bc)
+  echo "Dec: $NUM -> Bin: $BIN, Hex: $HEX"
+
+[ 32. PING PONG AVANZATO ] - Token File
+  # Scenari: "Processi si alternano con file di controllo"
+  # ping.sh lancia pong.sh e inizia il ciclo.
+  
+  # ping.sh:
+  # Crea file iniziale per triggerare pong (o viceversa, dipende da chi parte)
+  ./pong.sh &  
+  echo "PING partito"
+  touch "ping.txt" # Simuliamo che è il mio turno per partire
+  
+  while true; do
+      if [[ -e "ping.txt" ]]; then
+          rm "ping.txt"     # Consumo token
+          echo "PING"
+          sleep 1
+          touch "pong.txt"  # Passo palla
+      fi
+      sleep 2
+  done
+  
+  # pong.sh:
+  while true; do
+      if [[ -e "pong.txt" ]]; then
+          rm "pong.txt"
+          echo "PONG"
+          sleep 1
+          touch "ping.txt"
+      fi
+      sleep 2
+  done
+
+[ 33. COPIA RICORSIVA FILTER ] - Find Exec
+  # Scenari: "Copia solo .txt non vuoti da DIR_A a DIR_B"
+  
+  SRC="$1"
+  DEST="$2"
+  # -not -empty è cruciale
+  find "$SRC" -name "*.txt" -not -empty -exec cp "{}" "$DEST" \;
+
+[ 34. SOMMA RIGHE PARI/DISPARI ] - Indici
+  # Scenari: "Somma numeri su righe pari e dispari separatamente"
+  
+  PARI=0
+  DISP=0
+  i=1
+  while read NUM; do
+     if (( i % 2 == 0 )); then 
+         (( PARI += NUM ))
+     else 
+         (( DISP += NUM ))
+     fi
+     (( i++ ))
+  done < numeri.txt
+  echo "Pari: $PARI, Dispari: $DISP"
+
+[ 35. ESTRAZIONE CSV ] - Colonna per Indice
+  # Scenari: "Stampa la colonna N del file CSV"
+  
+  FILE="$1"
+  IDX="$2"
+  # cut gestisce virgole standard. Per CSV complessi (quote) vedi pattern awk.
+  cut -d ',' -f "$IDX" "$FILE"
+
+================================================================================
+ SEZIONE XII: REGOLE ANTI-ERRORE (DA LEGGERE PRIMA DI CONSEGNARE)
 ================================================================================
 1. ANTI-TYPO:
    Metti `set -u` all'inizio dello script. Se scrivi male una variabile (es. `STERR` invece di `STRERR`), lo script si ferma e ti avvisa invece di continuare con valore vuoto!
