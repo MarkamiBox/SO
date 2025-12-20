@@ -1,0 +1,541 @@
+Esempi di esercizi di esame passati
+Suggerimento: vi ricordo l'esistenza dei seguenti operatori per le variabili bash
+${#VAR} stringa che contiene la lunghezza del contenuto della variabile
+${VAR:offset} sottostringa che parte dal offset-esimo carattere del contenuto
+della variabile di nome VAR
+${VAR:offset:length} sottostringa lunga length che parte dal offset-esimo
+carattere del contenuto della variabile di nome VAR
+Esempi:
+VAR=“ciao”; echo ${VAR:0:1} ; viene messo in output c, cioè il primo carattere
+for ((INDICE=0; $INDICE<${#VAR}; INDICE=${INDICE}+1)) ; do echo
+${VAR:${INDICE}:1} ; done; mette in output tutti i caratteri uno per volta
+Esercizio Esame Pratica - 146 - lancia.sh
+Implementare due script bash lancia.sh e figlio.sh. Lo script lancia.sh imposta tutto
+quello che serve e poi lancia in esecuzione lo script figlio.sh (lo penso come se
+avesse indice i==1) SENZA passargli argomenti a riga di comando, e poi termina.
+Il primo script figlio.sh (i==1) a sua volta lancia lo script figlio.sh (i==2) SENZA
+passargli argomenti a riga di comando e poi termina.
+Ciascuno script figlio (i-esimo) lancia in esecuzione lo script figlio.sh ((i+1)-esimo)
+SENZA passargli argomenti a riga di comando, e poi termina.
+La sequenza di script uno figlio dell'altro termina quando in totale sono stati messi in
+esecuzione 10 script figlio.sh più lo script iniziale lancia.sh.
+Ciascun i-esimo script figlio.sh deve mettere in output il proprio pid .
+Dopo di questo, se i è maggiore di 10 allora lo script termina; se invece i è minore o
+uguale a 10 allora lo script lancia lo script figlio.sh e poi termina.
+SOLUZIONE Esercizio Esame Pratica - 146 - lancia.sh
+lancia.sh
+#!/bin/bash
+export VARGLOBALEINDICEATTUALE="1"
+export VARGLOBALEINDICEMASSIMO="10"
+./figlio.sh
+figlio.sh
+#!/bin/bash
+echo "$$"
+if (( ${VARGLOBALEINDICEATTUALE} < ${VARGLOBALEINDICEMASSIMO} )) ; then
+((VARGLOBALEINDICEATTUALE=${VARGLOBALEINDICEATTUALE}+1))
+./figlio.sh
+fi
+Esercizio Esame Pratica - 152 - 2di3.sh
+Implementare uno script 2di3.sh che legge una dopo l'altra le righe di testo del file /usr/include/stdio.h .
+Per ciascuna riga lo script mette sullo standard output una riga che contiene il solo secondo carattere della
+terza parola di quella riga.
+Se in una riga del file letto ci sono meno di 3 parole allora lo script non stampa nulla relativo a quella riga.
+Se nella terza parola di una riga del file ci sono meno di 2 caratteri allora lo script non stampa nulla relativo a
+quella riga.
+SOLUZIONE Esercizio Esame Pratica - 152 - 2di3.sh
+script 2di3.sh
+#!/bin/bash
+while read uno due tre quattro ; do
+if [[ $tre != "" ]] ; then
+car=${tre:1:1}
+if [[ $car != "" ]] ; then
+echo $car
+fi
+fi
+done < /usr/include/stdio.h
+NB: questa soluzione presenta un errore che va corretto mettendo il commando
+echo "$car" al posto di echo $car
+Perché occorre mettere quel particolare quoting?
+Esercizio Esame Pratica - 164 - estrai.sh
+Scrivere un file di testo input1.txt in cui in ciascuna riga c'é una parola, seguita da
+una virgola, seguita da un numero intero maggiore o uguale a zero, seguito da una
+virgola, seguito da un'altra parola.
+Ad esempio, il file input1.txt passato assieme al testo dell'esercizio contiene:
+gatto,52,vacca
+alfa,31,triangolo
+orto,9,bici
+zappa,69,guzzi
+disco,12,celentano
+Realizzare uno script estrai.sh che stampa a video le righe lette dal file input1.txt ma
+senza i numeri in mezzo a ciascuna riga e senza la virgola che segue il numero.
+Infine, stampa a video la somma dei numeri che non ha visualizzato.
+Qui sotto ecco cosa deve apparire a video usando il file input1.txt di esempio.
+gatto, vacca
+alfa, triangolo
+orto, bici
+zappa, guzzi
+disco, celentano
+173
+SOLUZIONE Esercizio Esame Pratica - 164 - estrai.sh
+#!/bin/bash
+IFS=$',\n'
+SOMMA=0
+while read PRIMA SECONDA TERZA ; do
+((SOMMA=${SOMMA}+${SECONDA}))
+echo "${PRIMA},${TERZA}"
+done < input1.txt
+echo ${SOMMA}
+Esercizio Esame Pratica - 158 - asterischi
+Realizzare uno script asterischi.sh che conta quante sono le righe che contengono
+almeno un asterisco * in tutti i file il cui nome termina con .h nella parte di
+filesystem a partire dalla directory /usr/include/
+Lo script deve stampare sul proprio standard error il numero delle righe contate.
+SOLUZIONE Esercizio Esame Pratica - 158 - asterischi
+#!/bin/bash
+echo ` find /usr/include/ -type f -name "*.h" -exec grep -H '*' '{}' \; | wc -l `
+1>&2
+Una soluzione un po’ più leggibile è questa:
+for name in ` find /usr/include/ -type f -name "*.h" ` ; do
+grep -H '*' ${name} | wc -l 1>&2
+done
+Esercizio Esame Pratica - 160 - DIFFICILE - nAnB
+Realizzare uno script nAnB.sh che prende come argomento una stringa di testo e verifica che la stringa sia
+formata esattamente da N caratteri A seguiti da N caratteri B, con un N qualunque maggiore di zero.
+Se la stringa corrisponde ai requisiti lo script scrive sullo standard output la parola "vero" seguita dal Numero
+N individuato.
+Altrimenti scrive "falso".
+Ad esempio, passando come argomento:
+AAABBB vedo in output "vero N=3"
+ADABBB vedo in output "falso" perché c'è carattere diverso da A e da B
+AAB vedo in output "falso"
+AabB vedo in output "falso"
+Realizzare lo script richiesto completando lo script base allegato.
+Suggerimento: vi ricordo l'esistenza dei seguenti operatori per le variabili bash
+${VAR:offset} sottostringa che parte dal offset-esimo carattere del contenuto
+della variabile di nome VAR
+${VAR:offset:length} sottostringa lunga length che parte dal offset-esimo
+carattere del contenuto della variabile di nome VAR
+Esempio:
+VAR=“ciao”; echo ${VAR:0:1} viene messo in output c
+SOLUZIONE Esercizio Esame Pratica - 160 - DIFFICILE - nAnB
+#!/bin/bash
+if (( $# != 1 )) ; then echo "manca l' argomento a riga di comando"; exit 1; fi
+NA=0; NB=0; RESULT=0;
+STRINGA=$1
+LUNGHEZZASTRINGA=${#STRINGA}
+NLETTI=0
+# cerco le A e la prima B dopo qualche A
+while (( ${NLETTI} < ${LUNGHEZZASTRINGA} )) ; do # ci sono altri caratteri da leggere
+# prendo il carattere in posizione NLETTI (all'inizio NLETTI 0)
+CAR=${STRINGA:${NLETTI}:1}
+(( NLETTI=${NLETTI}+1 ))
+if [[ ${CAR} == "A" ]] ; then
+((NA=$NA+1)) ;
+else
+if [[ ${CAR} == "B" && ${NA} -gt 0 ]] ; then
+NB=1
+break;
+fi
+# arrivo qui solo se ho letto un carattere diverso da A e B oppure se ho letto una B senza prima avere letto delle A
+# quindi in ogni caso termino senza avere verificato la simmetria
+echo falso caso 1
+exit 1
+fi
+done
+# cerco il resto delle B
+while (( ${NLETTI} < ${LUNGHEZZASTRINGA} )) ; do # ci sono altri caratteri da leggere
+# prendo il carattere in posizione NLETTI (all'inizio NLETTI 0)
+CAR=${STRINGA:${NLETTI}:1}
+(( NLETTI=${NLETTI}+1 ))
+if [[ ${CAR} == "B" ]] ; then
+((NB=$NB+1)) ;
+else
+# arrivo qui solo se ho letto un carattere diverso da B e quindi termino senza avere verificato la simmetria
+echo falso caso 2
+exit 2
+fi
+done
+# verifico di avere letto tante B quante A
+if [[ $NA -gt 0 && $NA == $NB ]] ; then echo vero N=$NA; exit 0
+Else echo falso caso 3: exit 3; fi
+Esercizio Esame Pratica - 148 - concatena.sh
+Implementare uno script bash chiamandolo concatena.sh
+Lo script concatena.sh scrive il proprio output nel file output.txt
+Se il file output.txt esiste già lo script lo svuota eliminando il contenuto.
+Lo script concatena.sh cerca tutti i files che stanno nella directory /usr/include/ e il cui nome inizia con la
+stringa std, ma non cerca nelle sottodirectory.
+Per ciascuno dei file trovati, lo script concatena.sh aggiunge al file output.txt la seconda, terza e quarta riga di
+quel file trovato.
+Suggerimento: vi ricordo l'esistenza dei seguenti operatori per le variabili bash
+${#VAR} stringa che contiene la lunghezza del contenuto della variabile
+${VAR:offset:length} sottostringa lunga length che parte dal offset-esimo
+carattere del contenuto della variabile di nome VAR
+Il primo carattere della stringa ha indice 0
+SOLUZIONE Esercizio Esame Pratica - 148 - concatena.sh
+#!/bin/bash
+echo -n "" > output.txt
+for name in /usr/include/std* ; do
+ if [[ -e ${name} ]] ; then
+if exec {FD}<${name} ; then
+ NUM=0
+while read -u ${FD} RIGA ; do
+ ((NUM=${NUM}+1));
+if (( $NUM > 1 )) ; then
+ echo "$RIGA" >> output.txt
+ fi
+ if (( $NUM >= 4 )) ; then
+ break;
+ fi
+ done
+ exec {FD}>&-
+ fi
+ fi
+done
+6ib Esercizi (laboratorio lez 13)
+Bash
+Contenuti:
+ESERCIZI SIMILI A QUELLI DELL'ESAME PROVA PRATICA
+Esercizio 1063 script bash "contaseparatamente.sh"
+Realizzare uno script bash contaseparatamente.sh che effettua le seguenti operazioni:
+Lo script prende un numero variabile di argomenti, al massimo 9.
+Ciascun argomento è il nome di un file.
+Lo script scrive sullo standard output il numero totale di righe dei file passati come argomenti di
+indice pari.
+Lo script scrive sullo standard error il numero totale di righe dei file passati come argomenti di
+indice dispari.
+Realizzare poi uno script bash lancia.sh che:
+lancia l'esecuzione dello script contaseparatamente.sh passando allo script come argomenti i
+primi 7 file che si ottengono come standard output del comando ls -S1 /usr/include/*.h
+Il modo in cui lo script lancia.sh lancia l'esecuzione di contaseparatamente.sh deve ridirezionare
+sia lo standard output che lo standard error di contaseparatamente.sh sullo standard error di
+lancia.sh stesso.
+Mi raccomando, verificare che lo script lancia.sh produca il suo output sullo standard error.
+Soluzione Esercizio 1063 es1063_contaseparatamente.sh
+http://www.cs.unibo.it/~ghini/didattica/sistemioperativi/ESERCIZI/es1063_contaseparatamen
+te.tgz
+Esercizio 1063 - contaseparatamente.sh
+6h Esercizi (lab lez12)
+Bash
+Contenuti:
+ESERCIZI SIMILI A QUELLI DELL'ESAME PROVA PRATICA 0b
+Esercizio 1053 script bash
+Esercizio 1054 script bash
+Esercizio 1053 raggruppa.sh
+Creare un file di testo cadutevic.txt come quello che segue:
+1972 cesena ribaltamento leva_del_freno_infilata_in_una_coscia
+1978 cesenatico manubrio_strappato fianco_grattugiato
+1979 cesena pedale_rotto botta_agli_zebedei
+1981 san_piero drittone_in_un_campo naso_rotto
+1982 monte_cavallo freni_allentati contusioni
+1983 monte_cavallo freni_allentati contusioni
+2007 ciola_araldi ribaltamento incisivo_perso
+2010 monte_cavallo ghiaccio niente
+Ciascuna riga del file contiene 4 campi: l'anno di una caduta, la località della caduta, il motivo
+della caduta, i danni riportati.
+Notare che quando un campo è formato da più di una parola le parole sono unite da un
+carattere underscore _ Ad esempio incisivo_perso
+Notare che nessun campo motivo è una sottostringa di qualche altro campo motivo.
+Realizzare uno script bash che emette sullo standard output alcune righe. In ciascuna riga
+compare un motivo della caduta e il numero delle volte che quella motivo è accaduto.
+Potrebbe essere utile usare qualche file temporaneo in cui salvare informazioni parziali.
+Per evitare ripetizioni di righe in output si può usare un comando uniq che permette di
+eliminare le righe ripetute di un file. Usare il man per capire come funziona.
+Esercizio 1054 stringhe_confinate.sh
+Creare un file di testo cadutevic.txt come quello che segue, potete stabilire voi quale separatore
+dei campi usarem ad esempio il TAB:
+Ciascuna riga del file contiene 4 campi: l'anno di una caduta, la località della caduta il motivo
+della caduta, i danni riportati.
+"1972" "cesena" "ribaltamento" "leva del freno infilata in una coscia"
+"1978" "cesenatico" "manubrio strappato" "fianco grattugiato"
+"1979" "cesena" "pedale rotto" "botta agli zebedei"
+"1981" "san piero" "drittone in un campo" "naso rotto"
+"1982" "monte cavallo" "freni allentati" "niente"
+"1983" "monte cavallo" "freni allentati" "niente"
+"2007" "ciola araldi" "ribaltamento" "incisivo perso"
+"2010" "monte cavallo" "ghiaccio" "niente"
+Notare che i singoli campi sono delimitati (prima e dopo) da un doppio apice " che fa parte del
+campo stesso.
+Quindi la stringa "freno infilato in una coscia" viene considerato come un unico campo.
+Realizzare uno script bash che scrive sullo standard output solo il TERZO campo di ciascuna riga
+del file cadutevic.txt
+Soluzione Esercizio 1054 stringhe_confinate.sh
+http://www.cs.unibo.it/~ghini/didattica/sistemioperativi/ESERCIZI/es1054_stringhe_confinate.tgz
+SOLUZIONI
+Soluzione Esercizio 1053 raggruppa.sh
+http://www.cs.unibo.it/~ghini/didattica/sistemioperativi/ESERCIZI/es1053_raggruppa.tgz
+#/bin/bash
+while read DATA LUOGO MOTIVO DANNI ; do
+NUM=`grep ${MOTIVO} cadutevic.txt | wc -l`
+echo "${MOTIVO} ${NUM}“
+done < cadutevic.txt | sort | uniq
+exit 0
+Soluzione Esercizio 1054 stringhe_confinate.sh
+http://www.cs.unibo.it/~ghini/didattica/sistemioperativi/ESERCIZI/es1054_stringhe_confinat
+e.tgz
+Simulazione ESAME 1
+tratto da Prove Pratiche settembre giugno 2022
+La prova consiste di due esercizi bash.
+Avrete a disposizione circa 1 ora e 15 minuti per risolvere i due esercizi e consegnarle la
+soluzione richiesta. \
+Non potete navigare in internet cercando informazioni all'esterno.
+Ovviamente, non potete comunicare con nessuno, in nessun modo.
+Salvate i files nella directory /home/studente/CONSEGNA
+Salvare spesso, per premunirsi in caso di crash.
+Esercizio Esame Pratica - 212 - divani.sh (1/2)
+Esiste un file divani.txt che contiene una riga per ciascun divano prodotto da una ditta. In ogni riga,
+separati da spazi, ci sono il nome del divano (una sola parola), la larghezza, l'altezza e la profondità
+espresse in cm.
+Scrivere uno script divani.sh che prende esattamente due argomenti, la larghezza minima e l'altezza
+massima.
+Lo script deve stampare a video l'elenco dei divani che rispettano due proprietà:
+1) la loro larghezza è maggiore o uguale della larghezza passata come primo argomento;
+2) la loro altezza è minore o uguale della altezza passata come secondo argomento allo script;
+Usare come file divani.txt il seguente.
+divano1 200 83 105
+Divano2 170 85 115
+divaNo3 185 65 99
+divano4 170 85 115
+divanO5 220 70 145
+Provare ad eseguire lo script passando come argomenti i seguenti:
+A) 200 80
+Bisogna ottenere come output:
+divanO5 220 70 145
+B) 180 71
+Bisogna ottenere come output:
+divaNo3 185 65 99
+divanO5 220 70 145
+Esercizio Esame Pratica - 212 - divani.sh (2/2)
+BASE DA COMPLETARE
+https://www.cs.unibo.it/~ghini/didattica/sistemioperativi/SIMULAZIONITEMP/2022_09_01__BASE_
+es212_divani_ONLINE.tgz
+SOLUZIONE
+https://www.cs.unibo.it/~ghini/didattica/sistemioperativi/SIMULAZIONITEMP/2022_09_01__es212
+_divani_ONLINE.tgz
+Dopo avere scaricato il file .tgz in locale,
+per estrarre i file dall’archivio .tgz eseguire il comando
+tar xvzf PERCORSO_FILE.tgz
+Esercizio Esame Pratica - 59 - conta multe uguali
+Sia dato un file di testo multe.txt in cui, in ciascuna riga, e' contenuto il nome e il cognome di un guidatore,
+l'ammontare della multa e la data (giorno, mese, anno) in cui la multa gli è stata comminata.
+I diversi campi in ciascuna riga sono separati da TAB o da spazi bianchi, scegliete voi.
+Le righe del file sono ordinate in modo crescente secondo il valore della multa.
+Ovviamente lo stesso valore può esistere più volte nel file.
+Scrivere uno script bash, avente nome contamulte.sh, che viene eseguito lanciando questa riga di
+comando ./contamulte.sh < multe.txt
+e che produce il seguente risultato:
+per ciascun valore di multa presente in quel file multe.txt, stampare una riga di testo contenente : il
+valore della multa e il numero di volte che quel valore si ripete nel file.
+NB: un esempio di file multe.txt e' contenuto qui:
+https://www.cs.unibo.it/~ghini/didattica/sistemioperativi/SIMULAZIONITEMP/2017_06_12__BASE_es59_c
+ontamulte.tgz
+Se volete potete sostituire i caratteri bianchi con dei TAB.
+esempio di file multe.txt
+Luca Andreucci 57 11 maggio 2014
+Giovanni Pau 57 20 aprile 2015
+Luca Andreucci 123 28 luglio 2015
+Astolfo Isoardi 160 21 dicembre 2015
+Vittorio Ghini 1000 17 febbraio 2016
+Gilles Villeneuve 1000 1 gennaio 1978
+output da produrre
+57 2
+123 1
+160 1
+1000 2
+Soluzione
+https://www.cs.unibo.it/~ghini/didattica/sistemioperativi/SIMULAZIONITEMP/2017_06_12_es59_c
+ontamulte.SOLUZIONE.tgz
+Simulazione ESAME 2
+tratto da Prova Pratica 082 luglio 2022
+La prova consiste di due esercizi bash.
+Avrete a disposizione circa 1 ora e 15 minuti per risolvere i due esercizi e consegnarle la
+soluzione richiesta.
+Non potete navigare in internet cercando informazioni all'esterno.
+Ovviamente, non potete comunicare con nessuno, in nessun modo.
+Salvate i files nella directory /home/studente/CONSEGNA
+Salvate i files spesso, per premunirsi in caso di crash.
+Esercizio Esame Pratica - 210 - selezmatricola.sh 1/3
+Un file di testo lista.txt (passato insieme a questo stesso file .pdf nell'archivio tgz)
+contiene l'elenco degli iscritti ad un esame scritto in cui ci sono studenti per quattro
+esami, precisamente "SISTEMI OPERATIVI", "SISTEMI VIRTUALIZZATI", "SYSTEMS
+INTEGRATION" e "VIRTUALIZZAZIONE E INTEGRAZIONE DI SISTEMI".
+Nel file, per ciascuno studente iscritto, ci sono 3 righe, seguite da una riga vuota, il
+cui contenuto è il seguente:
+DATA ORA_INIZIO
+MATRICOLA COGNOME NOME
+NOME_ESAME
+Scrivere uno script selezmatricola.sh che mette in output le matricole degli studenti
+che vogliono sostenere l'esame di SISTEMI OPERATIVI, una riga per ciascuna
+matricola.
+Suggerimento:
+il comando grep ha due opzioni -B 1 --no-group-separator che consente di mettere
+in output ANCHE LA RIGA che precede quella che contiene la word selezionata.
+il comando grep ha una opzione -v che consente di mettere in output le righe che
+NON CONTENGONO la word passata a grep come argomento
+Vedere la slide successiva per un esempio di input ed output.
+Esercizio Esame Pratica - 210 - selezmatricola.sh 2/3
+27/06/22 14:00
+0001030450 Simoni Luca
+SISTEMI VIRTUALIZZATI
+27/06/22 14:00
+0000933487 Falchio Andrea
+VIRTUALIZZAZIONE E INTEGRAZIONE DI SISTEMI
+27/06/22 14:00
+0000937768 ATTICI MARCO
+SISTEMI OPERATIVI
+27/06/22 14:00
+0001041321 Fochi lorenzo
+SISTEMI VIRTUALIZZATI
+27/06/22 14:00
+0000922658 Anichini Giovanni
+VIRTUALIZZAZIONE E INTEGRAZIONE DI SISTEMI
+27/06/22 14:00
+0000942144 Bonini Lorenzo
+VIRTUALIZZAZIONE E INTEGRAZIONE DI SISTEMI
+27/06/22 14:00
+0000971304 AMICI GIACOMO
+SISTEMI OPERATIVI
+27/06/22 14:00
+0000889185 Brin Alessandro
+SYSTEMS INTEGRATION
+27/06/22 14:00
+0000873293 zini salvatore
+SISTEMI OPERATIVI:
+Il file lista.txt è quello indicato qui a
+sinistra.
+L'output deve essere quello qui sotto
+0000937768
+0000971304
+0000873293
+Esercizio Esame Pratica - 210 - selezmatricola.sh 3/3
+BASE DA COMPLETARE
+https://www.cs.unibo.it/~ghini/didattica/sistemioperativi/SIMULAZIONITEMP/2
+022_07_18__BASE_es210_selezmatricola.tgz
+SOLUZIONE
+https://www.cs.unibo.it/~ghini/didattica/sistemioperativi/SIMULAZIONITEMP/2
+022_07_18__es210_selezmatricola.tgz
+Dopo avere scaricato il file .tgz in locale,
+per estrarre i file dall’archivio .tgz eseguire il comando
+tar xvzf PERCORSO_FILE.tgz
+Esercizio Esame Pratica - alfa - contaripetizionicar.sh
+Scrivere uno script contaripetizionicar.sh che accetta una stringa come argomento e
+stampa a video il numero di volte che ciascun carattere compare nella stringa.
+In particolare, stampare a video tante righe quanti i caratteri diversi trovati nella
+stringa, nella forma: NumeroVolteCheQuelCarattereCompare Carattere
+Ad esempio, se viene passato come argomento la stringa pescecane
+Dovreste vedere come output qualcosa di simile a questo:
+1 a
+2 c
+3 e
+1 n
+1 p
+1 s
+Suggerimenti:
+Provare a stampare a video una riga con ogni carattere che compare nella stringa.
+Avrete così tante righe, con lo stesso carattere, quante sono le volte che il carattere
+compare nella stringa.
+Provate poi ad applicare il comando sort.
+Poi usate il man (e provatelo) per vedere cosa fa il comando uniq -c
+SOLUZIONE
+https://www.cs.unibo.it/~ghini/didattica/sistemioperativi/SIMULAZIONITEMP/contaripet
+izionicar.sh
+Esercizio Esame Pratica- omega– contaripetizionicar2.sh
+Partendo dal precedente esercizio alfa, scrivere uno script contaripetizionicar2.sh che
+accetta una stringa come argomento e stampa a video il numero di volte che ciascun
+carattere compare nella stringa.
+In particolare, stampare a video tante righe quanti i caratteri diversi trovati nella
+stringa, nella forma: Carattere NumeroVolteCheQuelCarattereCompare
+Cioè i due campi sono in posizione invertita rispetto al precedente esercizio
+Ad esempio, se viene passato come argomento la stringa pescecane
+Dovreste vedere come output qualcosa di simile a questo:
+a 1
+c 2
+e 3
+n 1
+p 1
+s 1
+SOLUZIONE
+https://www.cs.unibo.it/~ghini/didattica/sistemioperativi/SIMULAZIONITEMP/contaripet
+izionicar2.sh
+Simulazione ESAME 3
+La prova consiste di due esercizi bash.
+Avrete a disposizione circa 1 ora e 15 minuti per risolvere i due esercizi e consegnarle la
+soluzione richiesta.
+Non potete navigare in internet cercando informazioni all'esterno.
+Ovviamente, non potete comunicare con nessuno, in nessun modo.
+Salvate i files nella directory /home/studente/CONSEGNA
+Salvate i files spesso, per premunirsi in caso di crash.
+Esercizio Esame Pratica- zyx– inverti2.sh
+Ordinamento inverso di righe di un file mediante ricorsione:
+Scrivere uno script inverti2.sh che prende come argomento il percorso di un file di
+testo e stampa le righe di quel file in ordine inverso, cioè dall'ultima riga alla prima.
+Si suppone che il file non abbia tantissime righe.
+Si suppone che il file non contenga metacaratteri o stringhe che possono causare
+espansioni bash.
+Utilizzare un approccio ricorsivo.
+Potete utilizzare anche più di uno script, facendoli chiamare dallo script principale
+inverti2.sh
+Se il file contiene le righe seguenti:
+Alfa beta gamma
+Gatto cane serpente maiale
+Asdrubale teofilo
+Allora in output vedrò:
+Asdrubale teofilo
+Gatto cane serpente maiale
+Alfa beta gamma
+SOLUZIONE
+https://www.cs.unibo.it/~ghini/didattica/sistemioperativi/SIMULAZIONITEMP/inverti2.s
+h
+https://www.cs.unibo.it/~ghini/didattica/sistemioperativi/SIMULAZIONITEMP/invertiric.
+sh
+Esercizio Esame Pratica- wkj – inverti.sh
+Ordinamento inverso di righe di un file SENZA RICORSIONE:
+Scrivere uno script inverti2.sh che prende come argomento il percorso di un file di
+testo e stampa le righe di quel file in ordine inverso, cioè dall'ultima riga alla prima.
+Si suppone che il file non abbia tantissime righe.
+Si suppone che il file non contenga metacaratteri o stringhe che possono causare
+espansioni bash.
+Utilizzare un approccio CHE NON SFRUTTI LA RICORSIONE.
+Se il file contiene le righe seguenti:
+Alfa beta gamma
+Gatto cane serpente maiale
+Asdrubale teofilo
+Allora in output vedrò:
+Asdrubale teofilo
+Gatto cane serpente maiale
+Alfa beta gamma
+SOLUZIONE 1
+https://www.cs.unibo.it/~ghini/didattica/sistemioperativi/SIMULAZIONITEMP/inverti.sh
+SOLUZIONE 2
+https://www.cs.unibo.it/~ghini/didattica/sistemioperativi/SIMULAZIONITEMP/inverti1.s
+h
+ESERCIZI BASH
+ESERCIZIO A – passaggio di testimone mediante file:
+Scrivere due script ping.sh e pong .sh in cui il processo ping imposta il necessario, poi lancia in
+background il processo pong e infine inizia a ciclare per passarsi ripetutamente il testimone con il
+processo pong.sh.
+I due processi devono fare il necessario per stampare a video, alternandosi, il proprio nome.
+Ogni processo informa l’altro processo che è il turno dell’altro, creando un file che si chiama come
+l’altro processo ma con estensione .txt invece che .sh
+Prima di passare il controllo all’altro processo, ogni processo elimina il file che ha il proprio nome ma
+con estensione .txt invece che .sh
+Per non usare troppa CPU, ogni processo verifica l’esistenza del file, avente il proprio nome ma
+estensione diversa, solo una volta ogni 2 secondi.
+ESERCIZIO B - Copia ricorsiva con filtro:
+Scrivi uno script che copia tutti i file con estensione .txt da una directory di origine a una directory di
+destinazione, entrambe specificate mediante un argomento a riga di comando. Lo script deve
+ignorare i file vuoti.
+ESERCIZIO C - Somma di numeri in un file:
+Scrivi uno script che legge un file contenente numeri interi (uno per riga) e stampa a video due
+somme, cioè la somma dei numeri nelle righe di indice pari e la somma dei numeri nelle righe di
+indice dispari.
+ESERCIZIO D - Estrazione di colonne:
+Premessa: un file CSV è un file di testo in cui ogni riga contiene dei campi separati da virgole e che
+serve per memorizzare delle tabelle.
+Ad esempio, se il file contiene questo:
+arturo merzario,nato a,Milano,21 dicembre 1950
+john remdios dos santo altavilla linares,nato a,Buenos Aires,3 marzo 1933
+allora i 4 campi della prima riga sono:
+"arturo merzario" "nato a" "Milano" "21 dicembre 1950”
+La terza colonna di quel file csv sarà composta dai due campi "Milano" e "Buenos Aires”.
+Scrivere uno script che prende come argomenti un percorso di un file .csv e un indice, e che stampa
+in output tutti i campi della indice-esima colonna di quel file CSV.

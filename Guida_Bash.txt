@@ -34,6 +34,7 @@ ISTRUZIONI:
 | "rendere eseguibile", "permesso esecuzione", "chmod +x", "eseguire script", "runnable", "dare permessi", "abilitare esecuzione"
 | "cambiare permessi", "leggibile e eseguibile", "chmod 755", "settare permessi", "cambiare mode", "diritti file", "read write execute"
 | "proprietario", "cambiare owner", "chown", "cambia utente file", "cambiare gruppo", "change owner", "possessore file"
+| "estrarre nome da percorso", "solo nome file", "basename", "rimuovere path", "nome pulito file", "togliere cartelle da nome"
 --------------------------------------------------------------------------------
 
 [ mkdir ] - Creazione Cartelle
@@ -60,12 +61,18 @@ ISTRUZIONI:
   "rinominare file", "cambiare nome", "rename", "nuovo nome", "mv rinomina", "modificare nome file", "cambia filename"
   mv vecchio.txt nuovo.txt
   
+  # NOTA SU MV: Se la destinazione è una cartella, sposta dentro. Se è un file, RINOMINA (e sovrascrive se esiste!).
+  
   "cambiare estensione", "rinomina dinamica", "sostituire estensione", "batch rename", "cambia suffisso", "mass rename", "nuova estensione", "rinominare tutti i txt"
   for f in *.txt; do mv "$f" "${f%.txt}.bak"; done
 
 [ cp ] - Copiare
   "copiare file", "duplicare file", "backup file", "cp copia", "copia singola", "creare duplicato", "copy file", "clone file"
   cp file.txt copia.txt
+  
+  # NOTA SU CP:
+  # cp -u (update): Copia solo se la sorgente è più recente della destinazione.
+  # cp -n (no-clobber): Non sovrascrive se il file esiste già.
   
   "copiare cartella", "copia ricorsiva", "duplicare directory", "backup cartella", "cp -r", "copia albero", "copiare tutto il contenuto", "copy dir"
   cp -R cartella_orig cartella_dest
@@ -396,6 +403,7 @@ ISTRUZIONI:
 | "verificare numero argomenti esatto", "controllo conteggio args", "check num args", "argcount error", "serve esattamente N argomenti", "validate argc", "check params count", "numero input corretto"
 | "verificare se variabile è un numero", "controllo intero", "is number", "validate integer", "check digit", "è numerico", "test number", "solo cifre"
 | "massimo numero argomenti", "se argomenti > 9", "too many args", "limite argomenti", "controllare troppo input", "max args", "overflow argomenti", "troppi parametri"
+| "iterare directory argomento", "loop folder argument", "scorrere cartella passata", "directory argument loop", "for file in $1", "check file extension txt", "solo file txt", "filtro estensione directory"
 --------------------------------------------------------------------------------
 
 [ if ] - Condizioni
@@ -413,7 +421,9 @@ ISTRUZIONI:
   if [[ "$A" == "$B" ]]; then ...
   
   "file più recente", "confronto date file", "newer file", "if -nt", "più nuovo di", "modificato dopo", "check time", "confronta timestamp"
-  if [[ "$F1" -nt "$F2" ]]; then ...
+  if [[ "$F1" -nt "$F2" ]]; then ...  # Newer Than (F1 più recente di F2)
+  if [[ "$F1" -ot "$F2" ]]; then ...  # Older Than (F1 più vecchio di F2)
+  # Utile per backup differenziali: copio solo se la sorgente ($F1) è più nuova del backup ($F2)
   
   "exit status", "se il comando ha avuto successo", "check success", "return code", "$?", "verifica errore", "codice uscita", "last command status"
   if (( $? == 0 )); then echo "Successo"; fi
@@ -452,6 +462,20 @@ ISTRUZIONI:
 
   "verificare se argomento è directory", "controllo directory esistente", "check dir exists", "validate dir", "is directory input", "solo cartelle", "test directory"
   if [[ ! -d "$1" ]]; then echo "Errore: $1 non è una directory"; exit 1; fi
+
+[ Iterazione Directory da Argomento ]
+  "iterare directory argomento", "loop folder argument", "scorrere cartella passata", "directory argument loop", "for file in $1", "check file extension txt", "solo file txt", "filtro estensione directory"
+  
+  DIR="$1"
+  if [[ ! -d "$DIR" ]]; then echo "Non è una directory"; exit 1; fi
+  
+  # Usa il GLOB "$DIR"/* per iterare sul CONTENUTO della directory arg
+  for FILE in "$DIR"/*; do
+      # Controlla se è un File Regular E se finisce con .txt
+      if [[ -f "$FILE" && "$FILE" == *.txt ]]; then
+          echo "Trovato file txt: $FILE"
+      fi
+  done
 
 ================================================================================
  SEZIONE VI: PROCESSI, BACKGROUND & SEGNALI (TRAP)
@@ -692,23 +716,31 @@ ISTRUZIONI:
 
 [ ESAME: ASTERISCHI ] - Grep Count
   # Conta righe che contengono '*' nei file .h
-  # -h toglie il nome file dall'output di grep
-  find /usr/include -name "*.h" -exec grep -h '*' {} \; | wc -l
+  # -h toglie il nome file dall'output di grep. Output su STDERR (richiesta esame).
+  find /usr/include -name "*.h" -exec grep -h '*' {} \; | wc -l 1>&2
 
 [ ESAME: CONCATENA ] - Range Righe
   # Stampa righe 2, 3, 4 di ogni file
+  
+  # Metodo 1: Counter loop (Standard)
   for F in /usr/include/std*; do
-      # Metodo 1: head/tail
-      head -n 4 "$F" | tail -n 3 >> output.txt
-      
-      # Metodo 2: counter (più sicuro)
-      C=0
-      while read RIGA; do
-          ((C++))
-          if (( C >= 2 && C <= 4 )); then echo "$RIGA" >> output.txt; fi
-          if (( C > 4 )); then break; fi
-      done < "$F"
+      if [[ -f "$F" ]]; then
+          C=0
+          while read RIGA; do
+              ((C++))
+              if (( C >= 2 && C <= 4 )); then echo "$RIGA" >> output.txt; fi
+              if (( C > 4 )); then break; fi
+          done < "$F"
+      fi
   done
+
+  # Metodo 2: File Descriptors (Avanzato/Richiesto in alcuni esami)
+  # Utile se richiesto di NON usare pipe o di gestire più file aperti.
+  # for F in ...; do
+  #    exec {FD}< "$F"
+  #    # ... leggi da $FD ...
+  #    exec {FD}>&-
+  # done
 
 [ ESAME: STRINGHE CONFINATE ] - CSV Quotato
   # Estrae il 3° campo tra virgolette: "a" "b" "c d"
@@ -771,9 +803,60 @@ ISTRUZIONI:
   echo "Somma scartata: $SOMMA"
 
 [ nAnB ] - Validazione Stringa
-  "nAnB", "validare stringa AAABBB", "pattern matching", "conteggio caratteri", "validazione sequenza"
-  # Logica: conta A, conta B, verifica se uguali
-  while (( i < LEN )); do ... done
+  "nAnB", "validare stringa AAABBB", "pattern matching", "conteggio caratteri", "validazione sequenza", "check pattern", "string validator", "format check"
+  
+  # Logica: Controlla che la stringa sia composta da N caratteri 'A' seguiti da N caratteri 'B'.
+  # Esempio: AAABBB (Vero, N=3), AAB (Falso), AB (Vero, N=1), AABB (Vero, N=2)
+  
+  if (( $# != 1 )) ; then echo "Manca argomento"; exit 1; fi
+  STRINGA=$1
+  LUNGHEZZA=${#STRINGA}
+  
+  NA=0; NB=0
+  NLETTI=0
+  
+  # FASE 1: Conto le A e mi fermo alla prima B (o altro carattere)
+  while (( NLETTI < LUNGHEZZA )); do
+      CAR=${STRINGA:NLETTI:1} # Estraggo char
+      (( NLETTI++ ))
+      
+      if [[ "$CAR" == "A" ]]; then
+          (( NA++ ))
+      elif [[ "$CAR" == "B" ]]; then
+          if (( NA > 0 )); then
+              NB=1 # Ho trovato la prima B
+              break # Esco dalla fase 1 e vado a contare le altre B
+          else
+              echo "Falso (Inizia con B)"
+              exit 1
+          fi
+      else
+          echo "Falso (Carattere non valido: $CAR)"
+          exit 1
+      fi
+  done
+  
+  # FASE 2: Conto il resto delle B
+  while (( NLETTI < LUNGHEZZA )); do
+      CAR=${STRINGA:NLETTI:1}
+      (( NLETTI++ ))
+      
+      if [[ "$CAR" == "B" ]]; then
+          (( NB++ ))
+      else
+          echo "Falso (Trovato char diverso da B nella seconda parte)"
+          exit 2
+      fi
+  done
+  
+  # FASE 3: Verifico simmetria
+  if (( NA > 0 && NA == NB )); then
+      echo "vero N=$NA"
+      exit 0
+  else
+      echo "falso (A=$NA, B=$NB)"
+      exit 3
+  fi
 
 [ Contaseparatamente ] - I/O Misto
   "contaseparatamente", "pari e dispari su stderr", "separare output", "logica alternata", "filtro pari dispari", "gestione argomenti misti", "stderr split"
@@ -1185,6 +1268,10 @@ ISTRUZIONI:
 | "copia ricorsiva filtro", "find exec cp", "copiare non vuoti", "backup filtrato", "find not empty"
 | "somma righe pari dispari", "indici pari dispari", "somma alternata", "modulo righe", "line index math"
 | "estrazione csv", "colonna csv", "cut indice", "csv field extract", "tabella csv"
+| "here string", "leggere da variabile", "loop su stringa", "tre frecce", "input da stringa", "string to loop", "read from var", "<<<"
+| "estrarre tra parentesi", "cut parentesi", "tag xml", "cut delimitatori multipli", "parsing html semplice", "campo tra simboli"
+| "staffetta", "passaggio testimone", "sincronizzazione singola", "one shot sync", "wait for file removal", "aspettare cancellazione file", "gara atleti"
+| "separazione output", "stdout vs stderr", "redirect differenziato", "parsing delimitatori multipli", "sort separator", "calcolo valore soglia"
 --------------------------------------------------------------------------------
 
 [ 22. MATRICI E GRIGLIE ] - Somma Righe/Colonne
@@ -1390,6 +1477,205 @@ ISTRUZIONI:
   IDX="$2"
   # cut gestisce virgole standard. Per CSV complessi (quote) vedi pattern awk.
   cut -d ',' -f "$IDX" "$FILE"
+
+[ 36. SERVER MONITOR (ESAME 300) ] - Log e Redirezione
+  # Obiettivo: Filtrare log per Zona e Soglia. Output OK su STDOUT, ALLARME su STDERR.
+  # File Dati (CSV): Nome,Risorsa,Utilizzo,Zona
+  
+  # analizza_risorse.sh ZONA SOGLIA
+  if (( $# != 2 )); then echo "Serve Zona e Soglia"; exit 1; fi
+  ZONA_REQ=$1
+  SOGLIA=$2
+  
+  IFS=","
+  while read SERVER RISORSA UTILIZZO ZONA_LOG; do
+      if [[ "$ZONA_LOG" == "$ZONA_REQ" ]]; then
+          if (( UTILIZZO > SOGLIA )); then
+              echo "ALLARME: $SERVER sta usando troppa $RISORSA ($UTILIZZO%)" 1>&2
+          else
+              echo "OK: $SERVER risorsa $RISORSA stabile."
+          fi
+      fi
+  done < log_risorse.txt
+
+  # lancia_monitoraggio.sh
+  # Esegue analisi, salva OK su file, mostra ALLARMI a video.
+  # > report.txt cattura STDOUT. STDERR rimane a video.
+  ./analizza_risorse.sh "Us-East" 20 > report_stabili.txt
+  echo "Analisi completata."
+
+[ 37. STATISTICHE GENERI (Here String) ] - Parsing Avanzato
+  "here string", "leggere da variabile", "loop su stringa", "tre frecce", "input da stringa", "<<<", "estrarre tra parentesi"
+  
+  # Obiettivo: Estrarre GENERE tra <...>, contare e formattare.
+  # Uso di <<< "$VAR" per passare una stringa multi-riga a un loop.
+  
+  # statistiche_generi.sh
+  
+  # 1. Estrazione:
+  # cat catalogo.db 
+  # | cut -d '<' -f 2  (Prende dopo la aperta: "Genere>")
+  # | cut -d '>' -f 1  (Prende prima della chiusa: "Genere")
+  # | sort | uniq -c | sort -nr (Conta e Ordina per frequenza)
+  
+  TESTO=$(cat catalogo.db | cut -d '<' -f 2 | cut -d '>' -f 1 | sort | uniq -c | sort -nr)
+
+  # 2. Formattazione con Here String (<<<):
+  # uniq -c produce: "   4 Fantascienza"
+  # read COUNT GENERE -> COUNT=4, GENERE="Fantascienza" (o "Giallo Storico")
+  
+  while read COUNT GENERE; do
+      echo "GENERE: $GENERE - QUANTITA': $COUNT"
+  done <<< "$TESTO"
+
+[ 38. STAFFETTA (PING PONG SINGOLO) ] - Sincronizzazione One-Shot
+  # Scenari: "Processo A crea un file e aspetta che B lo cancelli"
+  # Variante "Gara a staffetta": A corre, passa il testimone, B corre.
+  
+  # atleta_A.sh
+  echo "A: Inizia la corsa..."
+  touch "testimone.txt"       # Crea il lock/testimone
+  
+  # Busy waiting: Aspetta che il file SPARISCA (B lo ha preso)
+  while [[ -e "testimone.txt" ]]; do 
+      sleep 1
+  done
+  
+  echo "A: Ho passato il testimone. Fine."
+  exit 0
+
+  # atleta_B.sh
+  echo "B: Attendo il testimone..."
+  
+  # Busy waiting: Aspetta che il file COMPAIA (A lo ha creato)
+  while true; do
+      if [[ -e "testimone.txt" ]]; then
+          echo "B: Testimone ricevuto! Corro!"
+          sleep 2
+          rm "testimone.txt"  # Rimuove il file (segnala ad A)
+          echo "B: Corsa finita."
+          exit 0
+      fi
+      sleep 1
+  done
+
+  # gara.sh (Launcher Robusto)
+  # 1. Pulizia iniziale (Kill processi vecchi e rm file)
+  killall atleta_A.sh 2>/dev/null
+  killall atleta_B.sh 2>/dev/null
+  if [[ -e testimone.txt ]]; then rm testimone.txt; fi
+  
+  echo "--- GARA INIZIATA ---"
+  ./atleta_A.sh & 
+  ./atleta_B.sh &
+  wait
+  echo "--- GARA TERMINATA ---"
+
+
+
+[ 39. SMART BACKUP (AGGIORNAMENTO INCREMENTALE) ] - Confronto Date (-nt)
+  "smart backup", "copia incrementale", "solo file nuovi", "aggiornare se più recente", "backup differenziale", "confronto sorgente destinazione"
+  "count update", "basename file", "if -nt", "if -e else cp", "backup script bash"
+  
+  # Obiettivo: Copiare da SORGENTE a DESTINAZIONE solo se:
+  # 1. Il file non esiste nella destinazione (AGGIUNTO)
+  # 2. Il file sorgente è più recente della destinazione (AGGIORNATO)
+  
+  # SCRIPT: smart_backup.sh SORGENTE DESTINAZIONE
+  
+  if (( $# != 2 )); then
+      echo "Errore: Servono 2 argomenti (Sorgente e Destinazione)."
+      exit 1
+  fi
+
+  SORGENTE=$1
+  DESTINAZIONE=$2
+
+  AGGIUNTI=0
+  AGGIORNATI=0 
+
+  for FILE_COMPLETO in "$SORGENTE"/*; do
+      # Controllo che sia un file e termini con .txt
+      if [[ -f "$FILE_COMPLETO" && "$FILE_COMPLETO" == *.txt ]]; then
+          
+          # ESTRAGGO SOLO IL NOME (es. da "LAVORO/doc1.txt" ottengo "doc1.txt")
+          NOME_FILE=$(basename "$FILE_COMPLETO")
+          
+          # Costruisco il percorso target (es. "BACKUP/doc1.txt")
+          FILE_DESTINAZIONE="$DESTINAZIONE/$NOME_FILE"
+
+          echo "Analisi: $NOME_FILE"
+
+          # 1. Controllo se esiste nella destinazione
+          if [[ -e "$FILE_DESTINAZIONE" ]]; then
+              # Esiste: controllo se il sorgente è PIÙ RECENTE (-nt) del backup
+              if [[ "$FILE_COMPLETO" -nt "$FILE_DESTINAZIONE" ]]; then
+                  cp "$FILE_COMPLETO" "$FILE_DESTINAZIONE"
+                  echo " -> [AGGIORNATO]"
+                  (( AGGIORNATI++ ))
+              else
+                  echo " -> [GIA' AGGIORNATO]"
+              fi
+          else
+              # Non esiste: lo copio
+              cp "$FILE_COMPLETO" "$FILE_DESTINAZIONE"
+              echo " -> [AGGIUNTO]"
+              (( AGGIUNTI++ ))
+          fi
+      fi
+  done
+
+  echo "------------------------------------------------"
+  echo "Operazione completata: $AGGIUNTI file aggiunti, $AGGIORNATI file aggiornati."
+
+[ 40. CALCOLO VALORE & SPLIT OUTPUT ] - Redirezione Differenziata
+  "separazione output", "stdout vs stderr", "redirect differenziato", "parsing delimitatori multipli", "sort separator", "calcolo valore soglia"
+
+  # Obiettivo: Calcolare valore (Qty * Prezzo) e dividere l'output in base a una soglia.
+  # File input (dump.txt): ID|Nome#Qta:Prezzo (Separatori misti!)
+  # Es: 1|Vite#100:0.5
+
+  # calcola_valore.sh SOGLIA
+  if (( $# != 1 )); then
+      echo "Errore: serve 1 argomento (soglia)" >&2
+      exit 1
+  fi
+
+  SOGLIA=$1
+
+  # 1. sort -t '|' -k 2 : Ordina usando '|' come separatore, sulla colonna 2 (Nome)
+  # 2. Pipe verso il while
+  sort -t '|' -k 2 dump.txt | while read RIGA; do
+      
+      # Parsing (cut multipli per gestire separatori misti)
+      NOME=$(echo "$RIGA" | cut -d '|' -f 2 | cut -d '#' -f 1)
+      
+      QUANTITA=$(echo "$RIGA" | cut -d '#' -f 2 | cut -d ':' -f 1)
+      PREZZO=$(echo "$RIGA" | cut -d ':' -f 2)
+
+      (( TOTALE = QUANTITA * PREZZO ))
+
+      if (( TOTALE < SOGLIA )); then
+          # Stderr: Prodotti da svendere (o scartare)
+          echo "SVENDERE: $NOME (Valore: $TOTALE eur)" 1>&2
+      else
+          # Stdout: Prodotti da tenere
+          echo "TENERE: $NOME (Valore: $TOTALE eur)"
+      fi
+  done
+
+  # generatore_report.sh (Launcher)
+  # Pulisco i file vecchi (buona pratica)
+  > top_stock.txt
+  > low_stock.txt
+
+  # Eseguo lo script.
+  # Standard Output (1) -> va in top_stock.txt
+  # Standard Error (2)  -> va in low_stock.txt
+
+  ./calcola_valore.sh 300 > top_stock.txt 2> low_stock.txt
+
+  echo "Report generato."
 
 ================================================================================
  SEZIONE XII: REGOLE ANTI-ERRORE (DA LEGGERE PRIMA DI CONSEGNARE)
